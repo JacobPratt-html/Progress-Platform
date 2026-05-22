@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Measuring Progress in Organizational Governance — A Methods Primer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=Inter+Tight:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --paper: #f1ece1;
+    --paper-light: #f9f5ec;
+    --card: #fbf8f1;
+    --ink: #1a1a1a;
+    --ink-soft: #3a3a3a;
+    --ink-mute: #6e6961;
+    --rule: #d6cdb9;
+    --rule-soft: #e6dfcd;
+    --terracotta: #b9542f;
+    --terracotta-deep: #8a3d20;
+    --forest: #2d4f3a;
+    --forest-deep: #1c3527;
+    --ochre: #b88a2c;
+    --shadow: 0 1px 0 rgba(60, 50, 30, 0.04), 0 8px 24px -12px rgba(60, 50, 30, 0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter Tight', system-ui, sans-serif;
+    font-weight: 380;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(184, 84, 47, 0.04), transparent 50%),
+      radial-gradient(circle at 80% 60%, rgba(45, 79, 58, 0.04), transparent 50%);
+  }
+
+  /* ---------- Page frame ---------- */
+  .page {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 80px 56px 120px;
+  }
+
+  @media (max-width: 720px) {
+    .page { padding: 40px 22px 80px; }
+  }
+
+  /* ---------- Header ---------- */
+  .masthead {
+    border-top: 4px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding: 18px 0 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .masthead .left { font-weight: 500; color: var(--ink); }
+
+  header.hero {
+    padding: 80px 0 72px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+  header.hero::before {
+    content: '';
+    position: absolute;
+    top: 80px; right: 0;
+    width: 120px; height: 120px;
+    background: var(--terracotta);
+    border-radius: 50%;
+    opacity: 0.07;
+    filter: blur(20px);
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--terracotta);
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 50;
+    font-weight: 380;
+    font-size: clamp(2.5rem, 6.5vw, 5.2rem);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    max-width: 14ch;
+  }
+  h1 em {
+    font-style: italic;
+    font-weight: 320;
+    color: var(--terracotta-deep);
+  }
+
+  .lede {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 24;
+    font-weight: 330;
+    font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 60ch;
+    margin-top: 36px;
+  }
+
+  /* ---------- Section ---------- */
+  section {
+    padding: 80px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--ink-mute);
+    font-weight: 500;
+    flex-shrink: 0;
+    padding-top: 14px;
+  }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 72;
+    font-weight: 380;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    max-width: 24ch;
+  }
+  .section-title em {
+    font-style: italic;
+    color: var(--forest);
+    font-weight: 320;
+  }
+
+  .section-intro {
+    max-width: 65ch;
+    margin-bottom: 56px;
+    font-size: 1.025rem;
+    color: var(--ink-soft);
+  }
+  .section-intro p + p { margin-top: 1em; }
+
+  /* ---------- Spectrum visual ---------- */
+  .spectrum-wrap {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 48px 40px 36px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .spectrum-axis {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 14px;
+  }
+  .spectrum-bar {
+    height: 6px;
+    background: linear-gradient(to right,
+      var(--forest) 0%,
+      var(--forest) 18%,
+      var(--ochre) 50%,
+      var(--terracotta) 82%,
+      var(--terracotta) 100%);
+    border-radius: 3px;
+    position: relative;
+    margin-bottom: 38px;
+  }
+  .spectrum-bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(90deg, transparent, transparent 19.9%, rgba(255,255,255,0.5) 20%, transparent 20.1%);
+  }
+  .spectrum-points {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+  }
+  .spectrum-point .marker {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-bottom: 12px;
+  }
+  .spectrum-point:nth-child(1) .marker { background: var(--forest); }
+  .spectrum-point:nth-child(2) .marker { background: #5d6f3a; }
+  .spectrum-point:nth-child(3) .marker { background: var(--ochre); }
+  .spectrum-point:nth-child(4) .marker { background: #c47842; }
+  .spectrum-point:nth-child(5) .marker { background: var(--terracotta); }
+  .spectrum-point .label {
+    font-family: 'Fraunces', serif;
+    font-weight: 450;
+    font-size: 0.95rem;
+    line-height: 1.25;
+    margin-bottom: 4px;
+    color: var(--ink);
+  }
+  .spectrum-point .sub {
+    font-size: 0.825rem;
+    color: var(--ink-mute);
+    line-height: 1.4;
+  }
+
+  @media (max-width: 720px) {
+    .spectrum-points { grid-template-columns: 1fr; gap: 18px; }
+    .spectrum-bar { display: none; }
+    .spectrum-axis { display: none; }
+  }
+
+  /* ---------- Method cards ---------- */
+  .methods-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .method {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 48px;
+    padding: 48px 0;
+    border-top: 1px solid var(--rule);
+    position: relative;
+  }
+  .method:first-child { border-top: none; padding-top: 0; }
+
+  .method-num {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144;
+    font-weight: 300;
+    font-size: 4rem;
+    line-height: 0.8;
+    color: var(--terracotta);
+    font-style: italic;
+  }
+
+  .method-name {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 48;
+    font-weight: 450;
+    font-size: 1.65rem;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .method-tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-mute);
+    margin-bottom: 22px;
+  }
+  .method-desc {
+    font-size: 1.025rem;
+    color: var(--ink-soft);
+    max-width: 65ch;
+    margin-bottom: 28px;
+  }
+
+  .method-detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid var(--rule-soft);
+    margin-top: 4px;
+  }
+  .method-detail > div {
+    padding: 20px 24px 20px 0;
+    border-right: 1px solid var(--rule-soft);
+  }
+  .method-detail > div:last-child {
+    padding: 20px 0 20px 24px;
+    border-right: none;
+  }
+  .detail-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-mute);
+    font-weight: 500;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .detail-label::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--ink-mute);
+    border-radius: 50%;
+  }
+  .strengths .detail-label::before { background: var(--forest); }
+  .limits .detail-label::before { background: var(--terracotta); }
+
+  .detail-list {
+    list-style: none;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+  .detail-list li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .detail-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--ink-mute);
+  }
+
+  .example {
+    background: var(--paper-light);
+    border-left: 2px solid var(--terracotta);
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-size: 0.93rem;
+    color: var(--ink-soft);
+  }
+  .example .ex-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--terracotta-deep);
+    font-weight: 500;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .example a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--rule);
+    transition: text-decoration-color 0.2s;
+  }
+  .example a:hover { text-decoration-color: var(--terracotta); }
+  .example em { font-style: italic; color: var(--ink); }
+
+  @media (max-width: 720px) {
+    .method { grid-template-columns: 1fr; gap: 16px; padding: 36px 0; }
+    .method-num { font-size: 2.5rem; }
+    .method-detail { grid-template-columns: 1fr; }
+    .method-detail > div { border-right: none; border-bottom: 1px solid var(--rule-soft); padding: 16px 0; }
+    .method-detail > div:last-child { border-bottom: none; }
+  }
+
+  /* ---------- Comparison table ---------- */
+  .table-wrap {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    overflow-x: auto;
+    box-shadow: var(--shadow);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    min-width: 720px;
+  }
+  th, td {
+    text-align: left;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--rule-soft);
+    vertical-align: top;
+  }
+  th {
+    background: var(--paper-light);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-mute);
+    font-weight: 500;
+    border-bottom: 1px solid var(--rule);
+    position: sticky;
+    top: 0;
+  }
+  td.method-cell {
+    font-family: 'Fraunces', serif;
+    font-weight: 450;
+    font-size: 0.98rem;
+    color: var(--ink);
+    width: 28%;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(184, 138, 44, 0.04); }
+
+  .dots {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--rule);
+  }
+  .dot.on { background: var(--forest); }
+
+  /* ---------- 2x2 Matrix ---------- */
+  .matrix-wrap {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    padding: 56px 48px;
+    position: relative;
+    box-shadow: var(--shadow);
+  }
+  .matrix {
+    position: relative;
+    aspect-ratio: 1.4 / 1;
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    border-left: 1.5px solid var(--ink);
+    border-bottom: 1.5px solid var(--ink);
+  }
+  .matrix-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, var(--rule-soft) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--rule-soft) 1px, transparent 1px);
+    background-size: 25% 25%;
+    background-position: -1px -1px;
+    opacity: 0.7;
+  }
+  .matrix-y-label {
+    position: absolute;
+    left: -56px;
+    top: 50%;
+    transform: rotate(-90deg) translateX(50%);
+    transform-origin: right center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink);
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .matrix-x-label {
+    position: absolute;
+    bottom: -36px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .axis-arrow {
+    color: var(--ink-mute);
+  }
+  .axis-tip {
+    position: absolute;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+  }
+  .axis-tip.x-low { bottom: -16px; left: 0; }
+  .axis-tip.x-high { bottom: -16px; right: 0; }
+  .axis-tip.y-low { left: -10px; bottom: -4px; transform: rotate(-90deg) translateX(-50%); transform-origin: left top;}
+  .axis-tip.y-high { left: -10px; top: 0; transform: rotate(-90deg) translateY(-100%); transform-origin: left top;}
+
+  .point {
+    position: absolute;
+    transform: translate(-50%, 50%);
+    text-align: center;
+  }
+  .point .dot-big {
+    width: 14px; height: 14px;
+    background: var(--terracotta);
+    border-radius: 50%;
+    margin: 0 auto 6px;
+    border: 2px solid var(--paper-light);
+    box-shadow: 0 0 0 1px var(--terracotta);
+  }
+  .point.green .dot-big { background: var(--forest); box-shadow: 0 0 0 1px var(--forest); }
+  .point.ochre .dot-big { background: var(--ochre); box-shadow: 0 0 0 1px var(--ochre); }
+  .point .label {
+    font-family: 'Fraunces', serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.15;
+    background: var(--card);
+    padding: 2px 6px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 720px) {
+    .matrix-wrap { padding: 36px 24px 56px; }
+    .matrix { aspect-ratio: 1 / 1; }
+    .point .label { font-size: 0.7rem; }
+  }
+
+  /* ---------- Considerations ---------- */
+  .considerations {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .consideration {
+    background: var(--card);
+    padding: 32px 28px;
+  }
+  .consideration h4 {
+    font-family: 'Fraunces', serif;
+    font-weight: 450;
+    font-size: 1.15rem;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 14px;
+    letter-spacing: -0.005em;
+  }
+  .consideration h4 em {
+    font-style: italic;
+    color: var(--terracotta-deep);
+    font-weight: 400;
+  }
+  .consideration p {
+    font-size: 0.93rem;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+  .consideration .icon {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-mute);
+    margin-bottom: 18px;
+    letter-spacing: 0.15em;
+  }
+
+  @media (max-width: 900px) {
+    .considerations { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Guidance ---------- */
+  .guidance-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .guidance-row {
+    display: grid;
+    grid-template-columns: 1.1fr 2fr;
+    gap: 40px;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .guidance-row:last-child { border-bottom: none; }
+  .guidance-q {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.15rem;
+    line-height: 1.3;
+    color: var(--forest-deep);
+  }
+  .guidance-a {
+    font-size: 0.98rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .guidance-a strong {
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  @media (max-width: 720px) {
+    .guidance-row { grid-template-columns: 1fr; gap: 8px; }
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    padding: 56px 0 0;
+    border-top: 4px solid var(--ink);
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-mute);
+    letter-spacing: 0.08em;
+    line-height: 1.6;
+  }
+  footer .colophon { max-width: 38ch; }
+  footer .end-mark {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--terracotta);
+  }
+
+  /* ---------- Pull quote ---------- */
+  .pull {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 96;
+    font-weight: 350;
+    font-style: italic;
+    font-size: clamp(1.3rem, 2.3vw, 1.85rem);
+    line-height: 1.3;
+    color: var(--ink);
+    max-width: 28ch;
+    padding: 32px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    margin: 48px 0;
+    position: relative;
+  }
+  .pull::before {
+    content: '"';
+    font-size: 5rem;
+    color: var(--terracotta);
+    position: absolute;
+    left: -10px;
+    top: -10px;
+    font-family: 'Fraunces', serif;
+    font-style: normal;
+    line-height: 1;
+    opacity: 0.3;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="masthead">
+    <span class="left">AI Policy Research · Methods Primer</span>
+    <span>No. 01 · Measuring Governance</span>
+  </div>
+
+  <header class="hero">
+    <div class="eyebrow">A Visual Primer</div>
+    <h1>How do we measure <em>progress</em> in organizational governance?</h1>
+    <p class="lede">
+      Researchers, journalists, and policymakers increasingly need to assess what AI developers, platforms, and other organizations are doing — and whether they are improving over time. The choice of measurement method is rarely neutral: it shapes what gets counted as progress, what gets ignored, and how comparable the results are across organizations and across years.
+    </p>
+  </header>
+
+  <!-- ============================================== -->
+  <!-- SECTION 1: SPECTRUM -->
+  <!-- ============================================== -->
+  <section>
+    <div class="section-label">
+      <span class="section-num">§ 01</span>
+      <h2 class="section-title">A spectrum from <em>strict comparability</em> to <em>narrative depth</em></h2>
+    </div>
+
+    <div class="section-intro">
+      <p>Most assessment methods sit on a continuum. At one end, binary criteria produce highly comparable scores that strip away context. At the other, narrative case studies preserve rich context at the cost of standardization. Numerical rubrics, tiered maturity models, and quantitative metrics occupy the middle.</p>
+    </div>
+
+    <div class="spectrum-wrap">
+      <div class="spectrum-axis">
+        <span>← Highly structured · easy to compare</span>
+        <span>Unstructured · richly contextual →</span>
+      </div>
+      <div class="spectrum-bar"></div>
+      <div class="spectrum-points">
+        <div class="spectrum-point">
+          <div class="marker"></div>
+          <div class="label">Binary criteria</div>
+          <div class="sub">Yes / No against a list of conditions</div>
+        </div>
+        <div class="spectrum-point">
+          <div class="marker"></div>
+          <div class="label">Quantitative metrics</div>
+          <div class="sub">Counts, rates, percentages</div>
+        </div>
+        <div class="spectrum-point">
+          <div class="marker"></div>
+          <div class="label">Numerical rubric scoring</div>
+          <div class="sub">Calibrated scale of judgement</div>
+        </div>
+        <div class="spectrum-point">
+          <div class="marker"></div>
+          <div class="label">Maturity tiers</div>
+          <div class="sub">Developmental stages</div>
+        </div>
+        <div class="spectrum-point">
+          <div class="marker"></div>
+          <div class="label">Narrative discussion</div>
+          <div class="sub">Qualitative case description</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pull">
+      The trade-off is constant: every step toward comparability sacrifices some context, and every step toward context sacrifices some comparability.
+    </div>
+  </section>
+
+
+  <!-- ============================================== -->
+  <!-- SECTION 2: THE METHODS -->
+  <!-- ============================================== -->
+  <section>
+    <div class="section-label">
+      <span class="section-num">§ 02</span>
+      <h2 class="section-title">Eight methods in practice</h2>
+    </div>
+
+    <div class="section-intro">
+      <p>The three approaches commonly used in AI governance research — binary criteria, numerical rubric scoring, and qualitative discussion — anchor a broader family of methods. The remaining five (maturity tiers, quantitative metrics, third-party audit, benchmarking, and comparative ranking) are increasingly being borrowed from adjacent fields: corporate governance, human-rights reporting, cybersecurity, and ESG.</p>
+    </div>
+
+    <div class="methods-list">
+
+      <!-- METHOD 1: BINARY -->
+      <article class="method">
+        <div class="method-num">01</div>
+        <div class="method-body">
+          <h3 class="method-name">Binary evaluation against set criteria</h3>
+          <div class="method-tagline">Yes / No · met / not met · pass / fail</div>
+          <p class="method-desc">
+            Each criterion is a single, atomic question with a binary answer. Evaluators decide whether the organization meets a defined condition — for instance, "publishes a model card for each frontier release" — and report a tally across many such criteria. Aggregate scores are usually percentages.
+          </p>
+          <div class="example">
+            <span class="ex-label">Example in the wild</span>
+            The <em>Foundation Model Transparency Index</em> (FMTI) scores companies on roughly one hundred binary indicators. See e.g. AI21 Labs' December 2025 disclosure: <a href="https://github.com/stanford-crfm/fmti/blob/main/Dec2025/reports/AI21_Labs_fmtransparencyreport_Dec2025.csv" target="_blank" rel="noopener">stanford-crfm/fmti — AI21_Labs_fmtransparencyreport_Dec2025.csv</a>.
+          </div>
+          <div class="method-detail">
+            <div class="strengths">
+              <div class="detail-label">Strengths</div>
+              <ul class="detail-list">
+                <li>Maximum comparability across organizations and over time</li>
+                <li>Low inter-rater disagreement when criteria are sharply defined</li>
+                <li>Cheap to apply once the criteria set is built</li>
+                <li>Easy to communicate to non-specialist audiences</li>
+              </ul>
+            </div>
+            <div class="limits">
+              <div class="detail-label">Limitations</div>
+              <ul class="detail-list">
+                <li>Loses all gradation — a token gesture and a thorough programme score the same</li>
+                <li>Encourages "tick-box" compliance; companies optimise for the checklist</li>
+                <li>Whether a criterion is "met" can hinge on edge-case judgements that are hidden in the binary</li>
+                <li>Heavily dependent on the quality of the criteria set</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- METHOD 2: SIMPLE RUBRIC SCORING -->
+      <article class="method">
+        <div class="method-num">02</div>
+        <div class="method-body">
+          <h3 class="method-name">Scoring against a categorical rubric</h3>
+          <div class="method-tagline">Letter grades · ordinal categories · simple scales</div>
+          <p class="method-desc">
+            A small ordinal scale — often three to five categories such as "no action / partial / full" or letter grades — applied to each criterion. Each level is given a short descriptor. Sits between binary and detailed numerical scoring: it preserves enough gradation to distinguish weak from strong performers without requiring elaborate calibration.
+          </p>
+          <div class="example">
+            <span class="ex-label">Example in the wild</span>
+            The Brennan Center's <em>Tech Companies Pledged to Protect Elections from AI — Here's How They Did</em> evaluates platform commitments using a small set of qualitative ratings. See: <a href="https://www.brennancenter.org/our-work/research-reports/tech-companies-pledged-protect-elections-ai-heres-how-they-did" target="_blank" rel="noopener">brennancenter.org — Tech Companies Pledged to Protect Elections</a>.
+          </div>
+          <div class="method-detail">
+            <div class="strengths">
+              <div class="detail-label">Strengths</div>
+              <ul class="detail-list">
+                <li>Captures meaningful gradation without the calibration cost of long scales</li>
+                <li>Categories map naturally onto public narratives ("most failed", "two improved")</li>
+                <li>Easier to apply consistently than a 0–10 scale</li>
+              </ul>
+            </div>
+            <div class="limits">
+              <div class="detail-label">Limitations</div>
+              <ul class="detail-list">
+                <li>Boundary cases between adjacent categories can be contentious</li>
+                <li>Aggregating ordinal categories into numerical scores is methodologically fraught</li>
+                <li>Short descriptors leave substantial room for evaluator drift</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- METHOD 3: DETAILED RUBRIC SCORING -->
+      <article class="method">
+        <div class="method-num">03</div>
+        <div class="method-body">
+          <h3 class="method-name">Scoring against a detailed numerical rubric</h3>
+          <div class="method-tagline">Calibrated scales · 0–9 · 1–7 · anchored levels</div>
+          <p class="method-desc">
+            A longer scale — typically six to ten points — where each numerical level is anchored to a specific descriptor that defines what qualifies as that score. The descriptors do most of the work: they convert what looks like a subjective judgement into a near-procedural classification. Strong rubrics also distinguish what they are <em>not</em> measuring.
+          </p>
+          <div class="example">
+            <span class="ex-label">Example in the wild</span>
+            A research-grade rubric defining each integer score (e.g. an internal 0–9 rubric scoring evidence of AI scheming-related behaviours, where 0 is "not relevant", 5 is "moderate signal — transcript-level evidence, mundane explanations less plausible", and 9 is "exceptional signal — verifiable, strategic, clearly covert"). Detailed anchor descriptors give evaluators concrete criteria for each level.
+          </div>
+          <div class="method-detail">
+            <div class="strengths">
+              <div class="detail-label">Strengths</div>
+              <ul class="detail-list">
+                <li>Captures fine-grained variation while remaining quantitative</li>
+                <li>Anchored descriptors substantially improve inter-rater reliability</li>
+                <li>Makes the implicit reasoning behind a score auditable</li>
+                <li>Supports statistical analysis (medians, distributions, correlation)</li>
+              </ul>
+            </div>
+            <div class="limits">
+              <div class="detail-label">Limitations</div>
+              <ul class="detail-list">
+                <li>Building the rubric is itself a substantial research project</li>
+                <li>Long scales tempt false precision — a 6 versus a 7 may not be meaningful</li>
+                <li>Numerical mean of ordinal anchors should be interpreted with care</li>
+                <li>Time-intensive to apply at scale</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- METHOD 4: QUALITATIVE DISCUSSION -->
+      <article class="method">
+        <div class="method-num">04</div>
+        <div class="method-body">
+          <h3 class="method-name">Qualitative discussion of how a criterion was met</h3>
+          <div class="method-tagline">Narrative · case description · process documentation</div>
+          <p class="method-desc">
+            Rather than scoring, the evaluator (or the organization itself) describes <em>what</em> was done, <em>how</em> it was done, and what evidence supports the account. Outputs are prose: incident write-ups, programme summaries, before-and-after descriptions. Particularly common in commitments-based regimes — voluntary pledges where the action taken is heterogeneous across signatories.
+          </p>
+          <div class="example">
+            <span class="ex-label">Example in the wild</span>
+            Thorn's <em>Safety by Design — Three Month Progress Report</em> describes, in narrative form, each commitment and the concrete steps taken by signatory companies to deliver on them: <a href="https://info.thorn.org/hubfs/Thorn-SafetyByDesign-ThreeMonthProgressReport-2.pdf" target="_blank" rel="noopener">info.thorn.org — SafetyByDesign Three Month Progress Report</a>.
+          </div>
+          <div class="method-detail">
+            <div class="strengths">
+              <div class="detail-label">Strengths</div>
+              <ul class="detail-list">
+                <li>Preserves context, causation, and the texture of organizational action</li>
+                <li>Allows partial credit and acknowledges trade-offs</li>
+                <li>Surfaces methodology, not just outcome — useful for replication</li>
+                <li>Tolerates heterogeneity between organizations</li>
+              </ul>
+            </div>
+            <div class="limits">
+              <div class="detail-label">Limitations</div>
+              <ul class="detail-list">
+                <li>Hard to compare across organizations or against a baseline</li>
+                <li>Prose can obscure as much as it reveals — strong writing ≠ strong action</li>
+                <li>Self-reported narratives have obvious selection bias</li>
+                <li>Difficult to aggregate or summarize</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- METHOD 5: MATURITY MODEL -->
+      <article class="method">
+        <div class="method-num">05</div>
+        <div class="method-body">
+          <h3 class="method-name">Tiered maturity model</h3>
+          <div class="method-tagline">Levels of maturity · "ad-hoc → managed → optimized"</div>
+          <p class="method-desc">
+            Each area of governance is assigned a developmental level (often four or five), where levels are nested: a higher level presupposes the practices of all lower levels. Inherited from software process modelling (CMMI) and now common in cybersecurity and AI governance frameworks. The model encodes a theory of progression — that some practices are foundational and others advanced.
+          </p>
+          <div class="example">
+            <span class="ex-label">Example in the wild</span>
+            NIST's AI Risk Management Framework profile work and ISO/IEC 42001 use tiered language for organizational AI management. Many internal corporate assessments adopt a 1–5 maturity scale: <em>initial · repeatable · defined · managed · optimizing</em>.
+          </div>
+          <div class="method-detail">
+            <div class="strengths">
+              <div class="detail-label">Strengths</div>
+              <ul class="detail-list">
+                <li>Captures developmental trajectory rather than a static snapshot</li>
+                <li>Encodes a theory of which practices come before others</li>
+                <li>Provides clear "next step" guidance for the organization being assessed</li>
+                <li>Well-understood by corporate compliance audiences</li>
+              </ul>
+            </div>
+            <div class="limits">
+              <div class="detail-label">Limitations</div>
+              <ul class="detail-list">
+                <li>Assumes a single linear path — may not match real-world variation</li>
+                <li>Levels are aspirational; few organizations actually reach the top tier</li>
+                <li>Can reward process maturity over substantive outcomes</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- METHOD 6: QUANTITATIVE METRICS -->
+      <article class="method">
+        <div class="method-num">06</div>
+        <div class="method-body">
+          <h3 class="method-name">Quantitative metrics &amp; key indicators</h3>
+          <div class="method-tagline">Counts · rates · ratios · response times</div>
+          <p class="method-desc">
+            Hard numbers about real-world activity: number of models red-teamed before release, percentage of takedown requests actioned within 24 hours, hours of staff trained, number of external researchers given access. Rather than scoring against a criterion, the organization reports the underlying activity and the audience interprets.
+          </p>
+          <div class="example">
+            <span class="ex-label">Example in the wild</span>
+            Platform transparency reports (e.g. content moderation statistics under the EU Digital Services Act) and frontier-lab system cards that report the number and type of safety evaluations run. Many ESG frameworks follow the same logic.
+          </div>
+          <div class="method-detail">
+            <div class="strengths">
+              <div class="detail-label">Strengths</div>
+              <ul class="detail-list">
+                <li>Verifiable and reproducible where the underlying data is well-defined</li>
+                <li>Supports trend analysis over time</li>
+                <li>Avoids evaluator subjectivity at the measurement step</li>
+              </ul>
+            </div>
+            <div class="limits">
+              <div class="detail-label">Limitations</div>
+              <ul class="detail-list">
+                <li>Goodhart's law — once a metric becomes a target, it stops measuring what it measured</li>
+                <li>Counts measure activity, not quality or outcome</li>
+                <li>Self-reported numbers can be defined inconsistently across organizations</li>
+                <li>Important governance work (judgement calls, culture, escalation paths) resists quantification</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- METHOD 7: THIRD-PARTY AUDIT -->
+      <article class="method">
+        <div class="method-num">07</div>
+        <div class="method-body">
+          <h3 class="method-name">Third-party audit &amp; certification</h3>
+          <div class="method-tagline">Independent verification · pass / fail certification</div>
+          <p class="method-desc">
+            An external auditor, working against a published standard, examines the organization's documentation, processes, and (sometimes) systems, and issues a pass/fail certification or an audit report. The key difference from self-assessment is independence: the assessor is contractually accountable for the rigour of the assessment.
+          </p>
+          <div class="example">
+            <span class="ex-label">Example in the wild</span>
+            ISO/IEC 42001 (AI management systems) certifications; SOC 2 reports applied to AI infrastructure; emerging proposals for mandatory third-party audits of frontier models under the EU AI Act and several national frameworks.
+          </div>
+          <div class="method-detail">
+            <div class="strengths">
+              <div class="detail-label">Strengths</div>
+              <ul class="detail-list">
+                <li>Independence increases credibility for external audiences</li>
+                <li>Auditor has professional liability for assessment quality</li>
+                <li>Standardized methodology allows comparability across firms</li>
+                <li>Familiar to investors, regulators, and procurement teams</li>
+              </ul>
+            </div>
+            <div class="limits">
+              <div class="detail-label">Limitations</div>
+              <ul class="detail-list">
+                <li>Expensive — both for the auditor and the audited</li>
+                <li>The auditing profession for AI is still nascent; methodology is unsettled</li>
+                <li>Audit market dynamics (clients pay auditors) can create independence concerns</li>
+                <li>Certifies process, not necessarily safety outcomes</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- METHOD 8: BENCHMARKING -->
+      <article class="method">
+        <div class="method-num">08</div>
+        <div class="method-body">
+          <h3 class="method-name">Benchmark &amp; standardized evaluation performance</h3>
+          <div class="method-tagline">Standardised tests · capability evals · safety benchmarks</div>
+          <p class="method-desc">
+            The organization (or a third party) runs a fixed, public evaluation against the system or process being assessed. Performance on the benchmark stands in for performance on the underlying capability. Distinctive from rubric scoring because what is being assessed is an output behaviour, not a governance practice. Useful when the question is "does the system behave well" rather than "is the organization governing well".
+          </p>
+          <div class="example">
+            <span class="ex-label">Example in the wild</span>
+            HELM, MLCommons AI Safety benchmarks, and bespoke evaluation suites such as MASK or SimpleSafetyTests. Frontier labs increasingly publish benchmark performance in system cards.
+          </div>
+          <div class="method-detail">
+            <div class="strengths">
+              <div class="detail-label">Strengths</div>
+              <ul class="detail-list">
+                <li>Highly reproducible — anyone can re-run the benchmark</li>
+                <li>Directly measures system behaviour rather than organizational claims</li>
+                <li>Allows clean comparison between systems</li>
+              </ul>
+            </div>
+            <div class="limits">
+              <div class="detail-label">Limitations</div>
+              <ul class="detail-list">
+                <li>Benchmarks become saturated or memorized — last year's hard test is today's training data</li>
+                <li>Measures only what is testable; misses governance, culture, escalation</li>
+                <li>Strong incentive to teach to the test</li>
+                <li>Benchmark performance ≠ deployment behaviour</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- METHOD 9: COMPARATIVE RANKING -->
+      <article class="method">
+        <div class="method-num">09</div>
+        <div class="method-body">
+          <h3 class="method-name">Comparative ranking &amp; leaderboards</h3>
+          <div class="method-tagline">League tables · composite indices · relative position</div>
+          <p class="method-desc">
+            A composite index built on top of one of the methods above, surfaced as a ranking of organizations. The unit of progress is <em>relative position</em>: did Company A move up four places, did Company B drop. Often the most consequential layer publicly, because the press picks up the leaderboard even when the underlying methodology is more nuanced.
+          </p>
+          <div class="example">
+            <span class="ex-label">Example in the wild</span>
+            FMTI's overall company rankings; Ranking Digital Rights; AI Index leaderboards. Each layers a public ranking on top of an underlying scoring methodology.
+          </div>
+          <div class="method-detail">
+            <div class="strengths">
+              <div class="detail-label">Strengths</div>
+              <ul class="detail-list">
+                <li>Highly legible to non-specialist audiences</li>
+                <li>Creates a competitive dynamic that can accelerate adoption of good practices</li>
+                <li>A single number is easier to track over time than a portfolio of indicators</li>
+              </ul>
+            </div>
+            <div class="limits">
+              <div class="detail-label">Limitations</div>
+              <ul class="detail-list">
+                <li>Rankings hide absolute progress — everyone can improve while ranks stay flat</li>
+                <li>Weighting choices in the composite are often arbitrary but consequential</li>
+                <li>Encourages organizations to engage with the index rather than the underlying problem</li>
+                <li>Movement up and down can be statistical noise</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================== -->
+  <!-- SECTION 3: COMPARISON TABLE -->
+  <!-- ============================================== -->
+  <section>
+    <div class="section-label">
+      <span class="section-num">§ 03</span>
+      <h2 class="section-title">At a glance: <em>strengths and costs</em></h2>
+    </div>
+
+    <div class="section-intro">
+      <p>Across four dimensions that typically matter when designing or interpreting an assessment: how comparable the result is across organizations, how much context it preserves, how cheap it is to produce, and how independent the underlying judgement is from the organization being assessed. Three filled dots indicates the method scores highly on that dimension.</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Comparability</th>
+            <th>Depth of context</th>
+            <th>Low cost</th>
+            <th>Independence</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="method-cell">Binary criteria (Yes / No)</td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></td>
+          </tr>
+          <tr>
+            <td class="method-cell">Categorical rubric scoring</td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></td>
+          </tr>
+          <tr>
+            <td class="method-cell">Detailed numerical rubric</td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></td>
+          </tr>
+          <tr>
+            <td class="method-cell">Qualitative narrative</td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div></td>
+          </tr>
+          <tr>
+            <td class="method-cell">Tiered maturity model</td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div></td>
+          </tr>
+          <tr>
+            <td class="method-cell">Quantitative metrics</td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div></td>
+          </tr>
+          <tr>
+            <td class="method-cell">Third-party audit</td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div></td>
+          </tr>
+          <tr>
+            <td class="method-cell">Benchmark performance</td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div></td>
+          </tr>
+          <tr>
+            <td class="method-cell">Comparative ranking</td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></td>
+            <td><div class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+
+  <!-- ============================================== -->
+  <!-- SECTION 4: TWO-AXIS POSITIONING -->
+  <!-- ============================================== -->
+  <section>
+    <div class="section-label">
+      <span class="section-num">§ 04</span>
+      <h2 class="section-title">Plotting the methods on <em>two axes</em></h2>
+    </div>
+
+    <div class="section-intro">
+      <p>The vertical axis runs from low to high effort — how expensive it is to produce a single assessment. The horizontal axis runs from low to high comparability — how easily the result lines up against another organization or another year. Top-right is the most demanding territory and tends to deliver the most defensible numbers; bottom-left is cheap, scalable, and lossy. Most research designs end up combining methods from different quadrants.</p>
+    </div>
+
+    <div class="matrix-wrap">
+      <div class="matrix">
+        <div class="matrix-grid"></div>
+
+        <!-- Plotted points -->
+        <!-- Format: bottom=Y%, left=X% -->
+
+        <!-- Bottom-left: cheap, low comparability -->
+        <div class="point" style="left: 22%; bottom: 18%;">
+          <div class="dot-big"></div>
+          <div class="label">Narrative</div>
+        </div>
+
+        <!-- Bottom-mid -->
+        <div class="point green" style="left: 60%; bottom: 22%;">
+          <div class="dot-big"></div>
+          <div class="label">Binary criteria</div>
+        </div>
+
+        <div class="point green" style="left: 80%; bottom: 28%;">
+          <div class="dot-big"></div>
+          <div class="label">Comparative ranking</div>
+        </div>
+
+        <!-- Mid-low quantitative -->
+        <div class="point ochre" style="left: 70%; bottom: 38%;">
+          <div class="dot-big"></div>
+          <div class="label">Quant. metrics</div>
+        </div>
+
+        <!-- Middle: categorical rubric -->
+        <div class="point ochre" style="left: 55%; bottom: 50%;">
+          <div class="dot-big"></div>
+          <div class="label">Categorical rubric</div>
+        </div>
+
+        <!-- Mid-upper: maturity -->
+        <div class="point ochre" style="left: 45%; bottom: 60%;">
+          <div class="dot-big"></div>
+          <div class="label">Maturity model</div>
+        </div>
+
+        <!-- Upper-mid: detailed rubric -->
+        <div class="point" style="left: 72%; bottom: 72%;">
+          <div class="dot-big"></div>
+          <div class="label">Detailed rubric</div>
+        </div>
+
+        <!-- Upper: benchmarks -->
+        <div class="point green" style="left: 85%; bottom: 65%;">
+          <div class="dot-big"></div>
+          <div class="label">Benchmarks</div>
+        </div>
+
+        <!-- Top-right: third-party audit -->
+        <div class="point" style="left: 82%; bottom: 88%;">
+          <div class="dot-big"></div>
+          <div class="label">Third-party audit</div>
+        </div>
+
+        <span class="axis-tip x-low">low</span>
+        <span class="axis-tip x-high">high</span>
+      </div>
+      <div class="matrix-x-label">→ Comparability across organizations</div>
+      <div class="matrix-y-label">→ Effort &amp; cost to produce</div>
+    </div>
+  </section>
+
+
+  <!-- ============================================== -->
+  <!-- SECTION 5: CROSS-CUTTING -->
+  <!-- ============================================== -->
+  <section>
+    <div class="section-label">
+      <span class="section-num">§ 05</span>
+      <h2 class="section-title">Three <em>cross-cutting</em> considerations</h2>
+    </div>
+
+    <div class="section-intro">
+      <p>Beyond the choice of method, three design decisions shape the integrity of any assessment, regardless of which method is used.</p>
+    </div>
+
+    <div class="considerations">
+      <div class="consideration">
+        <span class="icon">— I —</span>
+        <h4>Who is doing the <em>assessing</em>?</h4>
+        <p>Self-assessment (the organization scores itself), peer assessment, civil-society assessment, regulator assessment, or contracted third-party audit each carry different credibility weights. Any method above can be applied by any of these actors — the choice of actor is often more consequential than the choice of method.</p>
+      </div>
+      <div class="consideration">
+        <span class="icon">— II —</span>
+        <h4>Static snapshot or <em>longitudinal</em>?</h4>
+        <p>A one-off score tells you where things stand; the same methodology repeated annually tells you whether they are improving. Longitudinal designs are far more useful for progress measurement specifically, but require methodological stability — every change to the criteria breaks the time series.</p>
+      </div>
+      <div class="consideration">
+        <span class="icon">— III —</span>
+        <h4>Process or <em>outcome</em>?</h4>
+        <p>Most governance assessment measures process: does the policy exist, is the team in place, did the evaluation happen. Outcome measurement asks instead whether harm was prevented, whether systems behaved well in deployment. Outcome data is harder to obtain but speaks more directly to what the governance is supposed to achieve.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================== -->
+  <!-- SECTION 6: GUIDANCE -->
+  <!-- ============================================== -->
+  <section>
+    <div class="section-label">
+      <span class="section-num">§ 06</span>
+      <h2 class="section-title">Choosing a method</h2>
+    </div>
+
+    <div class="section-intro">
+      <p>A rough decision aid. None of these mappings is strict — most strong research designs combine methods — but the questions below are the ones most worth asking before committing to an approach.</p>
+    </div>
+
+    <div class="guidance-list">
+
+      <div class="guidance-row">
+        <div class="guidance-q">If you need to compare ten companies in a single article…</div>
+        <div class="guidance-a"><strong>Binary criteria or categorical rubric.</strong> Both produce results that survive aggregation into a headline statistic. Pair with a methodology appendix that documents how each criterion was scored.</div>
+      </div>
+
+      <div class="guidance-row">
+        <div class="guidance-q">If you are tracking the same company over multiple years…</div>
+        <div class="guidance-a"><strong>Any method, applied consistently.</strong> What matters most is methodological stability. Resist the urge to refine criteria between cycles; document changes carefully when you do.</div>
+      </div>
+
+      <div class="guidance-row">
+        <div class="guidance-q">If reviewers will challenge your evaluator judgements…</div>
+        <div class="guidance-a"><strong>Detailed numerical rubric with anchor descriptors.</strong> The anchors make each score auditable. Pair with double-coding and inter-rater agreement statistics where stakes are high.</div>
+      </div>
+
+      <div class="guidance-row">
+        <div class="guidance-q">If the field is too new for stable criteria…</div>
+        <div class="guidance-a"><strong>Qualitative narrative.</strong> Premature quantification of novel phenomena hides more than it reveals. Narrative case studies surface the categories that future rubrics will eventually score against.</div>
+      </div>
+
+      <div class="guidance-row">
+        <div class="guidance-q">If the audience is corporate or regulatory…</div>
+        <div class="guidance-a"><strong>Maturity model or third-party audit.</strong> Both translate cleanly into corporate governance language and procurement processes.</div>
+      </div>
+
+      <div class="guidance-row">
+        <div class="guidance-q">If you want to influence behaviour, not just describe it…</div>
+        <div class="guidance-a"><strong>Comparative ranking, built on a defensible underlying method.</strong> Public ranking creates competitive pressure. The risk is that organizations optimise for the index rather than the underlying problem — design the underlying method accordingly.</div>
+      </div>
+
+      <div class="guidance-row">
+        <div class="guidance-q">If the question is "is the system safe", not "is the organization governing"…</div>
+        <div class="guidance-a"><strong>Benchmark performance, supplemented by red-teaming.</strong> Process-based methods will not catch a well-governed but poorly-behaved system. Benchmarks catch behaviour; narrative captures emergent failure modes that benchmarks miss.</div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <footer>
+    <div class="colophon">
+      A methods primer. Set in Fraunces &amp; Inter Tight. Examples drawn from the Foundation Model Transparency Index, the Brennan Center, and Thorn. Prepared for an AI policy research report.
+    </div>
+    <div class="end-mark">¶</div>
+  </footer>
+
+</div>
+
+</body>
+</html>
