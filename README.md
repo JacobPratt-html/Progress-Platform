@@ -1,4 +1,4 @@
 # Progress-Platform
 HTML files that help users to understand the Progress Platform project.
 
-https://jacobpratt-html.github.io/Progress-Platform/mcommitments_explorer.html
+https://jacobpratt-html.github.io/Progress-Platform/commitments_explorer.html
