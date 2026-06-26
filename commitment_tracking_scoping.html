@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commitment Tracking Platform — Scoping</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#071D49;
+    --blue:#0857C3;
+    --coral:#EC9982;
+    --ink:#18181A;
+    --slate:#8F99AD;
+    --mist:#E9EBEE;
+    --muted:#5C6678;
+    --paper:#FFFFFF;
+    --tint:#F4F6F8;
+
+    --grade-f-bg:#E3F3EC; --grade-f-tx:#157A4F; --grade-f-dot:#1E9E6A;
+    --grade-p-bg:#F7EDD9; --grade-p-tx:#875C12; --grade-p-dot:#D99A2E;
+    --grade-u-bg:#ECEEF2; --grade-u-tx:#525C70; --grade-u-dot:#8F99AD;
+
+    --display:'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+    --body:'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+    --mono:'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+    --maxw:1080px;
+    --bar-h:60px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:var(--body);
+    color:var(--ink);
+    background:var(--paper);
+    font-size:17px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  .wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:24px;}
+
+  a{color:var(--blue);text-decoration:none;border-bottom:1px solid rgba(8,87,195,.35);transition:border-color .2s,color .2s;}
+  a:hover{border-color:var(--blue);}
+  :focus-visible{outline:2.5px solid var(--blue);outline-offset:3px;border-radius:3px;}
+
+  /* ---------- Top bar / nav ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:60;
+    height:var(--bar-h);
+    background:rgba(255,255,255,.86);
+    backdrop-filter:saturate(140%) blur(10px);
+    -webkit-backdrop-filter:saturate(140%) blur(10px);
+    border-bottom:1px solid var(--mist);
+  }
+  .topbar-inner{max-width:var(--maxw);margin-inline:auto;padding-inline:24px;height:100%;
+    display:flex;align-items:center;justify-content:space-between;gap:18px;}
+  .brand{font-family:var(--mono);font-size:.74rem;letter-spacing:.04em;color:var(--navy);
+    white-space:nowrap;font-weight:500;}
+  .brand b{color:var(--blue);}
+  .nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;}
+  .nav::-webkit-scrollbar{display:none;}
+  .nav-link{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.02em;
+    color:var(--muted);border:0;border-radius:999px;
+    padding:7px 11px;white-space:nowrap;transition:color .2s,background .2s;
+  }
+  .nav-link b{color:inherit;font-weight:500;}
+  .nav-link:hover{color:var(--ink);background:var(--tint);}
+  .nav-link.is-active{color:var(--blue);background:rgba(8,87,195,.10);}
+
+  /* ---------- Hero ---------- */
+  .hero{position:relative;overflow:hidden;background:var(--navy);color:#fff;
+    padding-block:clamp(58px,9vw,104px);}
+  .hero-deco{position:absolute;top:-30px;right:-40px;width:min(46vw,520px);height:120%;
+    color:#fff;opacity:.07;pointer-events:none;
+    -webkit-mask-image:linear-gradient(245deg,#000,transparent 72%);
+    mask-image:linear-gradient(245deg,#000,transparent 72%);}
+  .hero .wrap{position:relative;z-index:2;}
+  .hero-eyebrow{font-family:var(--mono);font-size:.76rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--coral);margin:0 0 22px;}
+  .hero h1{font-family:var(--display);font-weight:700;letter-spacing:-.025em;line-height:1.02;
+    font-size:clamp(2.5rem,6.4vw,4.4rem);margin:0;max-width:16ch;}
+  .hero h1 span{color:var(--coral);}
+  .hero-stand{font-size:clamp(1.02rem,1.7vw,1.18rem);line-height:1.62;color:#C9D2E6;
+    max-width:64ch;margin:26px 0 0;font-weight:400;}
+  .hero-stand p{margin:0;}
+  .hero-stand p + p{margin-top:1.05em;}
+  .hero a{color:var(--coral);border-bottom-color:rgba(236,153,130,.5);}
+  .hero a:hover{border-color:var(--coral);}
+  .purpose{margin-top:38px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-left:3px solid var(--coral);
+    border-radius:0 10px 10px 0;padding:18px 22px;max-width:62ch;
+    transition:background-color .25s ease,border-color .25s ease,box-shadow .25s ease,transform .25s ease;}
+  .purpose .lbl{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--coral);display:block;margin-bottom:6px;}
+  .purpose p{margin:0;color:#fff;font-size:1rem;}
+  .purpose:hover{background:#fff;border-color:var(--mist);border-left-color:var(--coral);
+    box-shadow:0 14px 34px rgba(0,0,0,.30);transform:translateY(-3px);}
+  .purpose:hover .lbl{color:var(--blue);}
+  .purpose:hover p{color:var(--ink);}
+
+  /* summit strip */
+  .timeline{display:flex;align-items:flex-start;gap:0;margin-top:42px;overflow-x:auto;padding-bottom:2px;}
+  .tl-stop{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;text-align:center;min-width:104px;}
+  .tl-circle{width:38px;height:38px;border-radius:50%;border:2px solid rgba(255,255,255,.55);
+    background:rgba(255,255,255,.07);display:grid;place-items:center;font-size:19px;line-height:1;}
+  .tl-stop .nm{font-family:var(--display);font-weight:600;font-size:.96rem;color:#fff;margin-top:14px;line-height:1.2;}
+  .tl-stop .dt{font-family:var(--mono);font-size:.7rem;color:#9FAAC4;margin-top:3px;}
+  .tl-stop.future .tl-circle{border-style:dashed;border-color:var(--coral);background:rgba(236,153,130,.16);}
+  .tl-stop.future .nm{color:var(--coral);}
+  .tl-stop.future .dt{color:var(--coral);opacity:.85;}
+  .tl-arrow{flex:1 1 26px;min-width:26px;height:2px;background:rgba(255,255,255,.28);position:relative;margin-top:18px;}
+  .tl-arrow::after{content:"";position:absolute;right:-1px;top:50%;transform:translateY(-50%);
+    border-left:7px solid rgba(255,255,255,.45);border-top:5px solid transparent;border-bottom:5px solid transparent;}
+  .tl-arrow.to-future{background:rgba(236,153,130,.42);}
+  .tl-arrow.to-future::after{border-left-color:var(--coral);}
+
+  /* ---------- Section scaffolding ---------- */
+  section[id]{scroll-margin-top:84px;}
+  .section{padding-block:clamp(54px,8vw,92px);}
+  .section--tint{background:var(--tint);border-block:1px solid var(--mist);}
+  .sec-eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--blue);margin:0 0 14px;}
+  .sec-titlerow{display:flex;align-items:center;gap:15px;margin-bottom:10px;}
+  .sec-icon{flex:none;width:46px;height:46px;border-radius:12px;background:rgba(8,87,195,.09);
+    color:var(--blue);display:grid;place-items:center;}
+  .sec-icon svg{width:24px;height:24px;}
+  .sec-title{font-family:var(--display);font-weight:600;letter-spacing:-.02em;line-height:1.1;
+    font-size:clamp(1.55rem,3.2vw,2.25rem);color:var(--navy);margin:0;}
+  .lede{font-size:1.12rem;color:var(--ink);max-width:66ch;margin:18px 0 0;}
+  .prose{max-width:68ch;}
+  .prose p{margin:18px 0;}
+  .prose p:first-child{margin-top:18px;}
+  .muted{color:var(--muted);}
+  em{font-style:italic;}
+
+  /* tags */
+  .tag{display:inline-block;font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;
+    text-transform:uppercase;padding:3px 8px;border-radius:999px;vertical-align:middle;
+    background:rgba(236,153,130,.18);color:#9a4f37;font-weight:500;}
+
+  /* ---------- Outcome callouts ---------- */
+  .outcomes{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:30px;}
+  .outcome{border:1px solid var(--mist);border-radius:14px;padding:22px 22px 24px;background:var(--paper);
+    position:relative;transition:background-color .25s ease,border-color .25s ease,box-shadow .25s ease,transform .25s ease;}
+  .outcome--key{border-color:rgba(8,87,195,.4);box-shadow:0 1px 0 rgba(8,87,195,.06);}
+  .outcome .o-lbl{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--blue);margin:0 0 10px;display:flex;align-items:center;gap:9px;}
+  .outcome--opt .o-lbl{color:var(--muted);}
+  .outcome p{margin:0;font-size:1.2rem;line-height:1.5;color:var(--ink);}
+  .outcome p b{color:var(--navy);}
+  .outcome:hover{background:var(--navy);border-color:var(--navy);
+    box-shadow:0 14px 34px rgba(7,29,73,.22);transform:translateY(-3px);}
+  .outcome:hover p{color:#fff;}
+  .outcome:hover p b{color:var(--coral);}
+  .outcome--key:hover .o-lbl{color:#9DBEFF;}
+  .outcome--opt:hover .o-lbl{color:var(--coral);}
+  .outcome:hover .tag{background:rgba(236,153,130,.30);color:#fff;}
+
+  /* ---------- Definition block (sec 2) ---------- */
+  .sub-q{font-family:var(--display);font-style:italic;font-weight:500;color:var(--blue);
+    font-size:1.08rem;margin:0 0 6px;}
+  .deflist{margin:26px 0 0;border-top:1px solid var(--mist);}
+  .defrow{display:grid;grid-template-columns:130px 1fr;gap:20px;padding:16px 0;border-bottom:1px solid var(--mist);}
+  .defrow .k{font-family:var(--mono);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--muted);padding-top:3px;}
+  .defrow .v{margin:0;}
+  .clist{margin:8px 0 0;padding:0;list-style:none;}
+  .clist li{position:relative;padding-left:22px;margin:9px 0;}
+  .clist li::before{content:"";position:absolute;left:2px;top:11px;width:6px;height:6px;border-radius:2px;
+    background:var(--coral);}
+
+  /* ---------- Pipeline (numbered activities) ---------- */
+  .pipe-h{font-family:var(--mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--navy);margin:38px 0 18px;font-weight:500;}
+  .pipeline{counter-reset:step;list-style:none;margin:0;padding:0;}
+  .pipeline > li{position:relative;padding:0 0 22px 52px;}
+  .pipeline > li::before{counter-increment:step;content:counter(step,decimal-leading-zero);
+    position:absolute;left:0;top:-2px;width:34px;height:34px;border-radius:50%;
+    background:var(--navy);color:#fff;font-family:var(--mono);font-size:.78rem;
+    display:grid;place-items:center;}
+  .pipeline > li::after{content:"";position:absolute;left:16px;top:33px;bottom:6px;width:1.5px;
+    background:var(--mist);}
+  .pipeline > li:last-child::after{display:none;}
+  .pipeline .step-t{font-weight:500;color:var(--ink);}
+  .pipeline .step-t.opt{color:var(--muted);}
+  .subq{list-style:none;margin:12px 0 2px;padding:14px 16px;background:var(--tint);
+    border:1px solid var(--mist);border-radius:10px;}
+  .subq li{position:relative;padding-left:18px;margin:8px 0;font-size:.97rem;color:var(--ink);}
+  .subq li::before{content:"";position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;
+    background:var(--slate);}
+  .subq b,.step-t b{color:var(--navy);}
+
+  /* ---------- Commitment example cards (sec 3) ---------- */
+  .commits{display:flex;flex-direction:column;gap:22px;margin-top:30px;}
+  .commit-block{display:flex;flex-direction:column;}
+  .commit-head{margin:0 0 14px;}
+  .commit{border:1px solid var(--mist);border-radius:16px;padding:22px 26px 24px;background:var(--paper);
+    border-left-width:4px;}
+  .commit.v-easy{border-left-color:var(--grade-f-dot);}
+  .commit.v-hard{border-left-color:var(--grade-p-dot);}
+  .commit.v-none{border-left-color:var(--slate);}
+  .commit-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+  .commit-no{font-family:var(--mono);font-size:.78rem;color:var(--muted);letter-spacing:.05em;}
+  .vchip{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.66rem;
+    letter-spacing:.05em;text-transform:uppercase;padding:4px 9px;border-radius:999px;font-weight:500;}
+  .vchip .d{width:7px;height:7px;border-radius:50%;}
+  .vchip.easy{background:var(--grade-f-bg);color:var(--grade-f-tx);}
+  .vchip.easy .d{background:var(--grade-f-dot);}
+  .vchip.hard{background:var(--grade-p-bg);color:var(--grade-p-tx);}
+  .vchip.hard .d{background:var(--grade-p-dot);}
+  .vchip.none{background:var(--grade-u-bg);color:var(--grade-u-tx);}
+  .vchip.none .d{background:var(--grade-u-dot);}
+  .commit-title{font-family:var(--display);font-weight:600;font-size:1.2rem;line-height:1.3;
+    color:var(--navy);margin:0;letter-spacing:-.01em;}
+  .commit-quote{margin:0 0 14px;padding:14px 18px;background:var(--tint);border-radius:10px;
+    font-size:1rem;color:var(--ink);font-style:italic;line-height:1.55;}
+  .commit.v-easy .commit-quote{background:var(--grade-f-bg);}
+  .commit.v-hard .commit-quote{background:var(--grade-p-bg);}
+  .commit-sig{margin:0 0 16px;font-size:.92rem;color:var(--muted);}
+  .commit-sig .sig-l{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--navy);display:inline-block;margin-right:8px;}
+  .commit-q{margin:0;padding:0;list-style:none;border-top:1px solid var(--mist);}
+  .commit-q li{position:relative;padding:11px 0 11px 24px;border-bottom:1px solid var(--mist);font-size:.97rem;}
+  .commit-q li:last-child{border-bottom:0;padding-bottom:2px;}
+  .commit-q li::before{content:"?";position:absolute;left:0;top:11px;height:1.65rem;display:flex;align-items:center;font-family:var(--mono);
+    font-size:.82rem;color:var(--blue);font-weight:500;}
+  .commit-q b{color:var(--navy);}
+  .note{margin-top:24px;display:flex;gap:12px;align-items:flex-start;padding:16px 18px;
+    border-radius:12px;background:rgba(8,87,195,.05);border:1px solid rgba(8,87,195,.16);}
+  .note .ni{flex:none;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--blue);padding-top:2px;}
+  .note p{margin:0;font-style:italic;color:var(--ink);font-size:.98rem;}
+
+  /* ---------- Funnel (sec 4) ---------- */
+  .funnel-panel{background:var(--navy);border-radius:22px;padding:clamp(26px,4vw,46px);margin:34px 0 0;
+    color:#fff;overflow:hidden;}
+  .funnel{display:grid;grid-template-columns:0.92fr 1.08fr;gap:clamp(26px,4vw,52px);align-items:center;}
+  .readout-kicker{font-family:var(--mono);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--coral);margin:0 0 6px;min-height:1.2em;}
+  .readout-num{font-family:var(--display);font-weight:700;font-size:clamp(4rem,11vw,7.4rem);
+    line-height:.92;letter-spacing:-.04em;margin:0;font-variant-numeric:tabular-nums;}
+  .readout-of{font-family:var(--display);font-weight:600;font-size:1.18rem;color:#E4E9F4;
+    margin:10px 0 0;line-height:1.25;}
+  .readout-desc{color:#A9B4CC;font-size:.98rem;margin:14px 0 0;max-width:42ch;min-height:3.4em;}
+  .funnel-controls{display:flex;align-items:center;gap:16px;margin-top:26px;flex-wrap:wrap;}
+  .dots{display:flex;gap:9px;}
+  .dot-btn{appearance:none;border:0;background:transparent;padding:7px 3px;cursor:pointer;}
+  .dot-btn .pip{display:block;width:30px;height:5px;border-radius:999px;background:rgba(255,255,255,.22);
+    transition:background .25s,transform .25s;}
+  .dot-btn:hover .pip{background:rgba(255,255,255,.45);}
+  .dot-btn.is-active .pip{background:var(--coral);transform:scaleY(1.6);}
+  .play-btn{appearance:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+    color:#fff;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.2);
+    border-radius:999px;padding:8px 14px;transition:background .2s;}
+  .play-btn:hover{background:rgba(255,255,255,.18);}
+  .play-btn .ic-pause{display:none;}
+  .play-btn[data-playing="true"] .ic-pause{display:inline;}
+  .play-btn[data-playing="true"] .ic-play{display:none;}
+  .play-btn svg{width:11px;height:11px;}
+
+  .block-wrap{display:flex;flex-direction:column;gap:10px;}
+  .block-grid{display:grid;grid-template-columns:repeat(22,1fr);gap:5px;}
+  .block{aspect-ratio:1;border-radius:3px;background:rgba(255,255,255,.10);
+    transition:background-color .45s ease;}
+  .block.on{background:#2E74E6;}
+  .block.on.core{background:var(--coral);}
+  .block-legend{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:.68rem;
+    color:#9FAAC4;letter-spacing:.03em;margin-top:4px;}
+  .block-legend span{display:inline-flex;align-items:center;gap:6px;}
+  .block-legend i{width:9px;height:9px;border-radius:2px;display:inline-block;}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+    clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+  .findings{list-style:none;margin:22px 0 0;padding:0;max-width:66ch;}
+  .findings li{position:relative;padding:8px 0 8px 30px;font-size:1.05rem;}
+  .findings li .fn{position:absolute;left:0;top:8px;font-family:var(--mono);font-weight:500;
+    color:var(--blue);font-size:.92rem;}
+  .findings b{color:var(--navy);}
+
+  /* tier mini-cards (sec 4) */
+  .scope-h{font-family:var(--mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--navy);margin:40px 0 16px;font-weight:500;}
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .tier{border:1px solid var(--mist);border-radius:16px;padding:22px;background:var(--paper);
+    border-top:4px solid var(--slate);}
+  .tier.min{border-top-color:var(--coral);}
+  .tier.med{border-top-color:var(--blue);}
+  .tier.max{border-top-color:var(--navy);}
+  .tier-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:6px;}
+  .tier-name{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--muted);}
+  .tier-n{font-family:var(--display);font-weight:700;font-size:2.4rem;color:var(--navy);
+    line-height:1;letter-spacing:-.03em;}
+  .tier-tagline{font-family:var(--display);font-weight:600;font-size:1.02rem;color:var(--navy);margin:8px 0 8px;}
+  .tier p{margin:0;font-size:.95rem;color:var(--muted);line-height:1.55;}
+
+  .closing{margin-top:34px;padding:22px 24px;border-radius:14px;background:rgba(236,153,130,.10);
+    border:1px solid rgba(236,153,130,.32);max-width:74ch;}
+  .closing p{margin:0;font-size:1.04rem;color:var(--ink);}
+  .closing b{color:#9a4f37;}
+
+  /* ---------- Comparison table (sec 5) ---------- */
+  .legend-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:18px 0 2px;
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;}
+  .grade{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.7rem;
+    letter-spacing:.03em;padding:3px 9px;border-radius:999px;font-weight:500;text-transform:none;}
+  .grade .d{width:7px;height:7px;border-radius:50%;}
+  .grade.f{background:var(--grade-f-bg);color:var(--grade-f-tx);} .grade.f .d{background:var(--grade-f-dot);}
+  .grade.p{background:var(--grade-p-bg);color:var(--grade-p-tx);} .grade.p .d{background:var(--grade-p-dot);}
+  .grade.u{background:var(--grade-u-bg);color:var(--grade-u-tx);} .grade.u .d{background:var(--grade-u-dot);}
+
+  .table-scroll{overflow-x:auto;margin-top:24px;border:1px solid var(--mist);border-radius:16px;
+    -webkit-overflow-scrolling:touch;}
+  table.cmp{border-collapse:collapse;width:100%;min-width:680px;font-size:.95rem;}
+  table.cmp th,table.cmp td{text-align:left;padding:16px 18px;vertical-align:top;
+    border-bottom:1px solid var(--mist);}
+  table.cmp tr:last-child td,table.cmp tr:last-child th{border-bottom:0;}
+  table.cmp thead th{background:var(--tint);border-bottom:1px solid var(--mist);}
+  .rowlabel{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);width:150px;white-space:nowrap;background:var(--paper);}
+  table.cmp tbody tr td:first-child{background:#fff;}
+  .th-tier{min-width:175px;}
+  .th-inner{display:flex;flex-direction:column;align-items:flex-start;gap:10px;}
+  .ring{width:52px;height:52px;position:relative;}
+  .ring svg{transform:rotate(-90deg);width:52px;height:52px;}
+  .ring .trk{fill:none;stroke:var(--mist);stroke-width:5;}
+  .ring .fil{fill:none;stroke-width:5;stroke-linecap:round;
+    stroke-dasharray:113.097;stroke-dashoffset:calc(113.097 * (1 - var(--p)/100));}
+  .ring.min .fil{stroke:var(--coral);}
+  .ring.med .fil{stroke:var(--blue);}
+  .ring.max .fil{stroke:var(--navy);}
+  .ring .ctr{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);
+    font-weight:700;font-size:1.02rem;color:var(--navy);}
+  .th-name{font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+  .th-sub{font-family:var(--display);font-weight:600;font-size:1.12rem;color:var(--navy);letter-spacing:-.01em;
+    margin-bottom:-4px;}
+  .gset{display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
+  .gset .q{color:var(--muted);font-size:.9rem;margin-left:2px;}
+
+  .refnote{margin-top:30px;max-width:70ch;}
+  .refnote .rl{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--navy);display:block;margin-bottom:8px;}
+  .refnote p{margin:0 0 14px;}
+
+  /* ---------- Risk tables (sec 6) ---------- */
+  .risk-h{font-family:var(--mono);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--navy);margin:26px 0 14px;font-weight:500;}
+  .risk-h.first{margin-top:6px;}
+  .table-scroll.risk{border-radius:14px;}
+  table.risk{border-collapse:collapse;width:100%;min-width:640px;font-size:.96rem;}
+  table.risk th{text-align:left;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);font-weight:500;padding:13px 18px;background:var(--tint);
+    border-bottom:1px solid var(--mist);}
+  table.risk td{padding:17px 18px;vertical-align:top;border-bottom:1px solid var(--mist);width:50%;}
+  table.risk tr:last-child td{border-bottom:0;}
+  table.risk td .rt{font-weight:600;color:var(--navy);}
+  .empty-cell{color:var(--slate);font-family:var(--mono);font-size:.8rem;}
+
+  /* ---------- Footer ---------- */
+  .footer{background:var(--navy);color:#A9B4CC;padding-block:34px;margin-top:0;}
+  .footer-inner{max-width:var(--maxw);margin-inline:auto;padding-inline:24px;
+    display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center;
+    font-family:var(--mono);font-size:.74rem;letter-spacing:.03em;}
+  .footer a{color:#fff;border-bottom-color:rgba(255,255,255,.4);}
+  .footer b{color:#fff;}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:900px){
+    .block-grid{grid-template-columns:repeat(16,1fr);}
+  }
+  @media (max-width:860px){
+    .outcomes{grid-template-columns:1fr;}
+    .funnel{grid-template-columns:1fr;}
+    .tiers{grid-template-columns:1fr;}
+    .readout-num{font-size:clamp(3.6rem,20vw,5rem);}
+  }
+  @media (max-width:680px){
+    body{font-size:16px;}
+    .brand .full{display:none;}
+    .defrow{grid-template-columns:1fr;gap:4px;}
+    .defrow .k{padding-top:0;}
+    .block-grid{grid-template-columns:repeat(12,1fr);}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;animation-iteration-count:1!important;
+      transition-duration:.001ms!important;scroll-behavior:auto!important;}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><b>Commitment Tracking</b> <span class="full">— Scoping&nbsp;·&nbsp;v0.1</span></div>
+    <nav class="nav" aria-label="Sections">
+      <a class="nav-link" href="#opportunity"><b>01</b> Opportunity</a>
+      <a class="nav-link" href="#scope"><b>02</b> Scope</a>
+      <a class="nav-link" href="#commitments"><b>03</b> Commitments</a>
+      <a class="nav-link" href="#analysis"><b>04</b> Analysis</a>
+      <a class="nav-link" href="#options"><b>05</b> Options</a>
+      <a class="nav-link" href="#risks"><b>06</b> Risks</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" id="top">
+    <svg class="hero-deco" viewBox="0 0 300 300" aria-hidden="true">
+      <defs><pattern id="sq" width="15" height="15" patternUnits="userSpaceOnUse">
+        <rect width="7.5" height="7.5" rx="1.5" fill="currentColor"/></pattern></defs>
+      <rect width="300" height="300" fill="url(#sq)"/>
+    </svg>
+    <div class="wrap">
+      <h1>Commitment Tracking Platform <span>Scoping</span></h1>
+      <div class="hero-stand">
+        <p>Across four convenings — Bletchley Park (November 2023), Seoul (May 2024), Paris (February 2025), and New Delhi (February 2026) — the AI Summit Series has produced a growing stack of voluntary commitments from both governments and companies. New Delhi alone yielded 95 commitments, and <a href="https://jacobpratt-html.github.io/Progress-Platform/commitments_explorer.html" target="_blank" rel="noopener">we have identified 178 in total</a>.</p>
+        <p>What the Series has not produced is any mechanism to judge whether those commitments are good, or to track whether anyone is keeping them, from one summit to the next. This is now the most consistent criticism of the Series, as voluntary commitments without measurement tend to drift toward the vague and the unverifiable.</p>
+      </div>
+
+      <div class="purpose">
+        <span class="lbl">Purpose of doc</span>
+        <p>To showcase what can be achieved for the Commitment Tracking Platform, and highlight some of the scoping considerations.</p>
+      </div>
+
+      <div class="timeline" aria-label="AI Summit Series timeline">
+        <div class="tl-stop"><span class="tl-circle">🇬🇧</span><div class="nm">Bletchley Park</div><div class="dt">Nov 2023</div></div>
+        <span class="tl-arrow" aria-hidden="true"></span>
+        <div class="tl-stop"><span class="tl-circle">🇰🇷</span><div class="nm">Seoul</div><div class="dt">May 2024</div></div>
+        <span class="tl-arrow" aria-hidden="true"></span>
+        <div class="tl-stop"><span class="tl-circle">🇫🇷</span><div class="nm">Paris</div><div class="dt">Feb 2025</div></div>
+        <span class="tl-arrow" aria-hidden="true"></span>
+        <div class="tl-stop"><span class="tl-circle">🇮🇳</span><div class="nm">New Delhi</div><div class="dt">Feb 2026</div></div>
+        <span class="tl-arrow to-future" aria-hidden="true"></span>
+        <div class="tl-stop future"><span class="tl-circle">🇨🇭</span><div class="nm">Geneva</div><div class="dt">2027</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 1. OPPORTUNITY ===================== -->
+  <section class="section" id="opportunity">
+    <div class="wrap">
+      <p class="sec-eyebrow">Section 01</p>
+      <div class="sec-titlerow">
+        <span class="sec-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 20h20"/><path d="M3 20 L9 8.5 l3 5.5"/><path d="M10.5 20 L16 9 l5.5 11"/><path d="M16 9 V5.5 l3 1-3 1"/>
+          </svg>
+        </span>
+        <h2 class="sec-title">Core outcomes</h2>
+      </div>
+      <div class="prose">
+        <p>This highlights the need for work that pushes towards two core outcomes:</p>
+      </div>
+
+      <div class="outcomes">
+        <div class="outcome outcome--key">
+          <p class="o-lbl">Outcome 1</p>
+          <p>PAI holds organizations to account for the progress of <b>current</b> voluntary commitments.</p>
+        </div>
+        <div class="outcome outcome--opt">
+          <p class="o-lbl">Outcome 2 <span class="tag">Optional</span></p>
+          <p>PAI improves the design of <b>future</b> voluntary commitments.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 2. SCOPE ===================== -->
+  <section class="section section--tint" id="scope">
+    <div class="wrap">
+      <p class="sec-eyebrow">Section 02</p>
+      <div class="sec-titlerow">
+        <span class="sec-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1.1" fill="currentColor" stroke="none"/>
+          </svg>
+        </span>
+        <h2 class="sec-title">Developing a Public Accountability Tracker</h2>
+      </div>
+
+      <p class="sub-q">What is the progress in delivering on current voluntary commitments?</p>
+
+      <div class="deflist">
+        <div class="defrow">
+          <span class="k">Purpose</span>
+          <p class="v">A public accountability tool that credits strong governance practices and policy responses, while surfacing unmet ones. This will focus on commitments related to PAI strategic themes.</p>
+        </div>
+        <div class="defrow">
+          <span class="k">Format</span>
+          <p class="v">Something engaging — an interactive website? With the SDG dashboard as an initial template.</p>
+        </div>
+        <div class="defrow">
+          <span class="k">Content</span>
+          <div class="v">
+            <ul class="clist">
+              <li>What commitments are relevant to PAI's strategic themes?</li>
+              <li><span class="tag">Optional</span>&nbsp; What is the <em>'quality'</em> of each commitment?</li>
+              <li>What is the progress of the organization / government in meeting this commitment?</li>
+              <li>What is the <em>overall</em> progress of this commitment?</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <p class="pipe-h">Doing this will require the following high-level activities</p>
+      <ol class="pipeline">
+        <li><span class="step-t">Creating the set of commitments to review, based on themes, verifiability, and overall resource.</span></li>
+        <li>
+          <span class="step-t">Defining measurement methodology.</span>
+          <ul class="subq">
+            <li><b>Individual vs. collective:</b> is it a rating for each org / country plus an aggregate rating, or just an aggregate rating?</li>
+            <li><b>Quality of implementation:</b> do we rate companies who are doing more higher, or just have a pass / fail methodology?</li>
+            <li><b>Sub-measures:</b> can we split up larger commitments into sub-measures or metrics, and track them?</li>
+            <li>Do we rate countries where dozens of them have signed up to a commitment?</li>
+          </ul>
+        </li>
+        <li><span class="step-t">Calibrate the rating methodology with two or more reviewers (external ones?).</span></li>
+        <li><span class="step-t opt"><span class="tag">Optional</span>&nbsp; Define the quality-measurement methodology.</span></li>
+        <li><span class="step-t">Collecting relevant public information with an agent and human searching.</span></li>
+        <li><span class="step-t opt"><span class="tag">Optional</span>&nbsp; Verifying information with relevant organizations, collecting new information through engagement, and providing a right to reply to ratings.</span></li>
+        <li><span class="step-t">Finalizing ratings and presentation.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===================== 3. COMMITMENTS ===================== -->
+  <section class="section" id="commitments">
+    <div class="wrap">
+      <p class="sec-eyebrow">Section 03</p>
+      <div class="sec-titlerow">
+        <span class="sec-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16.5 4.5 a1.6 1.6 0 0 1 2.3 0 l0.7 0.7 a1.6 1.6 0 0 1 0 2.3 L11 15.5 l-3.6 1 1-3.6 z"/><path d="M5 21h11"/>
+          </svg>
+        </span>
+        <h2 class="sec-title">What actually is a voluntary commitment?</h2>
+      </div>
+      <div class="commits">
+
+        <div class="commit-block">
+          <div class="commit-head">
+            <h3 class="commit-title">Even a 'simple' commitment has <em>a lot</em> of decisions to track properly</h3>
+          </div>
+          <article class="commit v-easy">
+            <div class="commit-top">
+              <span class="commit-no">Example 01</span>
+              <span class="vchip easy"><span class="d"></span>Easy to verify</span>
+            </div>
+            <blockquote class="commit-quote">"Publish — by the next AI Summit — statistical insights derived from anonymised, aggregated and taxonomized usage data, either directly or (where relevant) through contributions to international efforts."</blockquote>
+            <p class="commit-sig"><span class="sig-l">Signatories</span> India 2026 — Amazon, Anthropic, BharatGen, Cohere, Google, Gynani.ai, G42, Meta, Microsoft, Mistral AI, OpenAI, Sarvam AI, Socket Labs</p>
+            <ul class="commit-q">
+              <li><b>Individual vs. collective:</b> do we just release how well orgs are meeting this <em>'as a whole'</em>, and have it be less scientific?</li>
+              <li><b>Quality of implementation:</b> do we rate someone who published the minimum info the same as a company that releases quarterly, detailed updates?</li>
+              <li><b>Sub-measures:</b> can we split this up into smaller data points to share?</li>
+              <li><b>Other:</b> how do we recognize a contribution to international efforts?</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="commit-block">
+          <div class="commit-head">
+            <h3 class="commit-title">A collective commitment breaks the per-signatory model, so who is accountable for a shared deliverable?</h3>
+          </div>
+          <article class="commit v-hard">
+            <div class="commit-top">
+              <span class="commit-no">Example 02</span>
+              <span class="vchip hard"><span class="d"></span>Hard to verify</span>
+            </div>
+            <blockquote class="commit-quote">"Developing the Trusted AI Commons: Provide Reference Based Assessment Resources: The Commons will support the hosting of evaluation methodologies, instruments, and benchmarks that serve as non-prescriptive reference resources to guide consistent, comparable, and robust assessment of AI systems across jurisdictions."</blockquote>
+            <p class="commit-sig"><span class="sig-l">Signatories</span> India 2026 — Brazil, Cambodia, Canada, Colombia, Egypt, Ethiopia, France, Iceland, Italy, Japan, Mauritius, Mexico, Mozambique, Nigeria, Norway, Philippines, Serbia, Singapore, Switzerland, Tanzania, UK, UNICEF</p>
+            <ul class="commit-q">
+              <li>How do we evaluate how well the Commons is being done?</li>
+              <li>How do we evaluate if each country is participating in it?</li>
+              <li>Do we evaluate Tanzania the same as the UK? Seems unfair.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="commit-block">
+          <div class="commit-head">
+            <h3 class="commit-title">Some commitments are too vague to assess at all, which is itself a finding</h3>
+          </div>
+          <article class="commit v-none">
+            <div class="commit-top">
+              <span class="commit-no">Example 03</span>
+              <span class="vchip none"><span class="d"></span>Not verifiable</span>
+            </div>
+            <blockquote class="commit-quote">"We will keep addressing the risks of AI to information integrity and continue work on AI transparency."</blockquote>
+            <p class="commit-sig"><span class="sig-l">Signatories</span> Paris 2025 — 50+ countries</p>
+            <ul class="commit-q">
+              <li>What's the baseline for this? What does <em>'addressing'</em> mean?</li>
+              <li>Should we just mention this, but not measure progress?</li>
+            </ul>
+          </article>
+        </div>
+
+      </div>
+
+      <div class="note">
+        <span class="ni">Note</span>
+        <p>I think this is why assessing quality to improve future commitments is an important part of this work.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 4. ANALYSIS ===================== -->
+  <section class="section section--tint" id="analysis">
+    <div class="wrap">
+      <p class="sec-eyebrow">Section 04</p>
+      <div class="sec-titlerow">
+        <span class="sec-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 5h16 l-6 7 v6 l-4 2 v-8 z"/>
+          </svg>
+        </span>
+        <h2 class="sec-title">Some initial analysis</h2>
+      </div>
+      <p class="lede">I've looked at how easy the commitments are to track, and whether they are related to our three strategic themes. Of the 178 commitments:</p>
+
+      <ul class="findings">
+        <li><span class="fn">40</span><b>are related to our three themes and trackable</b> — but with a lot of work (i.e. not easy to do).</li>
+        <li><span class="fn">11</span>of those 40 are <b>easier to track</b>.</li>
+        <li><span class="fn">4</span>of those 11 are <b>industry commitments closely related to our themes</b> (six are closely related; four of those are industry, primarily from 2024).</li>
+      </ul>
+
+      <!-- Signature: animated funnel -->
+      <div class="funnel-panel">
+        <p class="sr-only">The 178 commitments narrow in three steps: 178 in total, 40 related to our themes and trackable, 11 of those easier to track, and 4 strict-core industry commitments.</p>
+        <div class="funnel">
+          <div class="readout" aria-hidden="true">
+            <p class="readout-kicker" id="fKicker">In total</p>
+            <p class="readout-num" id="fNum">178</p>
+            <p class="readout-of" id="fOf">commitments across four summits</p>
+            <p class="readout-desc" id="fDesc">Everything pledged at Bletchley Park, Seoul, Paris and New Delhi — by governments and companies alike.</p>
+            <div class="funnel-controls">
+              <div class="dots" id="fDots" role="group" aria-label="Funnel stage">
+                <button class="dot-btn is-active" data-i="0" aria-label="Stage 1: 178 total"><span class="pip"></span></button>
+                <button class="dot-btn" data-i="1" aria-label="Stage 2: 40 relevant and trackable"><span class="pip"></span></button>
+                <button class="dot-btn" data-i="2" aria-label="Stage 3: 11 easier to track"><span class="pip"></span></button>
+                <button class="dot-btn" data-i="3" aria-label="Stage 4: 4 strict core"><span class="pip"></span></button>
+              </div>
+              <button class="play-btn" id="fPlay" data-playing="true" aria-label="Pause animation">
+                <svg class="ic-pause" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><rect x="2" y="1.5" width="3" height="9" rx="1"/><rect x="7" y="1.5" width="3" height="9" rx="1"/></svg>
+                <svg class="ic-play" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M2.5 1.5 L10.5 6 L2.5 10.5 Z"/></svg>
+                <span class="play-label">Pause</span>
+              </button>
+            </div>
+          </div>
+          <div class="block-wrap">
+            <div class="block-grid" id="blockGrid" aria-hidden="true"></div>
+            <div class="block-legend" aria-hidden="true">
+              <span><i style="background:#2E74E6"></i> In current set</span>
+              <span><i style="background:var(--coral)"></i> Strict core (4)</span>
+              <span><i style="background:rgba(255,255,255,.12)"></i> Excluded</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="closing">
+        <p>A rigorous analysis of ~4–11 commitments would be more defensible but won't be interesting enough to draw attention. Widening to ~40 lets us <b>market it better and have greater impact</b>, but would need more resourcing — daily project work and expert reviewers — to actually do. We could then group by themes or summits, which would make for a more interactive website experience as well.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 5. OPTIONS ===================== -->
+  <section class="section" id="options">
+    <div class="wrap">
+      <p class="sec-eyebrow">Section 05</p>
+      <div class="sec-titlerow">
+        <span class="sec-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3 2.5 8 12 13 21.5 8 z"/><path d="M2.5 12 12 17 21.5 12"/><path d="M2.5 16 12 21 21.5 16"/>
+          </svg>
+        </span>
+        <h2 class="sec-title">What can we do</h2>
+      </div>
+
+      <div class="table-scroll">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th class="rowlabel" scope="col"></th>
+              <th class="th-tier" scope="col">
+                <div class="th-inner">
+                  <span class="ring min"><svg viewBox="0 0 44 44"><circle class="trk" cx="22" cy="22" r="18"/><circle class="fil" cx="22" cy="22" r="18" style="--p:10"/></svg><span class="ctr">4</span></span>
+                  <span class="th-sub">Option A</span>
+                  <span class="th-name">Minimal</span>
+                </div>
+              </th>
+              <th class="th-tier" scope="col">
+                <div class="th-inner">
+                  <span class="ring med"><svg viewBox="0 0 44 44"><circle class="trk" cx="22" cy="22" r="18"/><circle class="fil" cx="22" cy="22" r="18" style="--p:27.5"/></svg><span class="ctr">11</span></span>
+                  <span class="th-sub">Option B</span>
+                  <span class="th-name">Medium</span>
+                </div>
+              </th>
+              <th class="th-tier" scope="col">
+                <div class="th-inner">
+                  <span class="ring max"><svg viewBox="0 0 44 44"><circle class="trk" cx="22" cy="22" r="18"/><circle class="fil" cx="22" cy="22" r="18" style="--p:100"/></svg><span class="ctr">40</span></span>
+                  <span class="th-sub">Option C</span>
+                  <span class="th-name">Maximal</span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="rowlabel">Commitments</td>
+              <td>4</td>
+              <td>11</td>
+              <td>30 – 40</td>
+            </tr>
+            <tr>
+              <td class="rowlabel">Actors</td>
+              <td>Industry only</td>
+              <td>Industry + government</td>
+              <td>Industry + government</td>
+            </tr>
+            <tr>
+              <td class="rowlabel">Grading</td>
+              <td>Fulfilled / Partial / Unfulfilled, or % rating</td>
+              <td>Fulfilled / Partial / Unfulfilled, plus % rating</td>
+              <td>Fulfilled / Partial / Unfulfilled only</td>
+            </tr>
+            <tr>
+              <td class="rowlabel">Evidence</td>
+              <td>Public information</td>
+              <td>Public information</td>
+              <td>Public + (optional) outreach to companies and states</td>
+            </tr>
+            <tr>
+              <td class="rowlabel">Navigation</td>
+              <td>Flat</td>
+              <td>Grouped by theme or summit</td>
+              <td>Grouped by theme or summit</td>
+            </tr>
+            <tr>
+              <td class="rowlabel">Resourcing</td>
+              <td>Jacob + second-reviewer capacity</td>
+              <td>Jacob + a second reviewer</td>
+              <td>Jacob + 1–2 others; expert reviewers; daily project work</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="refnote">
+        <span class="rl">Reference points</span>
+        <p>Comparable efforts that landed ran 8 people (Stanford Transparency Index) to 12 (MIT Governance Mapping), and the SDG team far more; there are <b>one- or two-person versions but they haven't made a big impact</b>. And our previous Progress Reporting work really only looked at four commitments.</p>
+        <p>This means the minimal tier is low resource but low-impact, while the maximal tier is a larger effort with a fraction of the headcount bigger teams use. Agent-assisted review helps, but there's a risk we'll try to do too much.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 6. RISKS ===================== -->
+  <section class="section section--tint" id="risks">
+    <div class="wrap">
+      <p class="sec-eyebrow">Section 06</p>
+      <div class="sec-titlerow">
+        <span class="sec-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3 l7 2.5 v5.5 c0 4.5-3 7.5-7 9 -4-1.5-7-4.5-7-9 V5.5 z"/><path d="M12 8.5v3.5"/><path d="M12 15.2h.01"/>
+          </svg>
+        </span>
+        <h2 class="sec-title">Risks</h2>
+      </div>
+
+      <p class="risk-h first">The two key risks I see</p>
+      <div class="table-scroll risk">
+        <table class="risk">
+          <thead><tr><th scope="col">Risk</th><th scope="col">Mitigation</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="rt">Conflict of interest / independence.</span> We are publicly grading organizations that are our funders, and so we might be seen as being 'too soft'.</td>
+              <td>Publish methodology and evidence up front; be transparent about our relationship to organizations; consider independent or advisory review of grades before publication.</td>
+            </tr>
+            <tr>
+              <td><span class="rt">Launched but not maintained.</span> This is a tracker, so it will require ongoing tracking from one summit to the next. Lots of these initiatives have lapsed over time, so we'll need to be sure of resourcing.</td>
+              <td>Scope to the tier that can be <em>sustained</em>, not just <em>built</em>; more than one person on the project to sustain it if resourcing changes.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="risk-h">Other risks</p>
+      <div class="table-scroll risk">
+        <table class="risk">
+          <thead><tr><th scope="col">Risk</th><th scope="col">Mitigation</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="rt">Incorrect assessment.</span> We miss information and provide incorrect assessments, leading to reputational damage.</td>
+              <td>Agent and human review; more than one person doing the review.</td>
+            </tr>
+            <tr>
+              <td><span class="rt">Unfair grading of low-capacity signatories.</span> Collective commitments span uneven actors (UK and Japan vs. Mozambique and Cambodia). A single bar could penalize lower-capacity states.</td>
+              <td><span class="empty-cell">— to be added</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div>Commitment Tracking Platform · <b>Internal working draft v0.1</b></div>
+    <div>Partnership on AI · June 2026 · <a href="https://jacobpratt-html.github.io/Progress-Platform/commitments_explorer.html" target="_blank" rel="noopener">Commitments explorer</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- Build the 178 blocks ---- */
+  var TOTAL = 178;
+  var grid = document.getElementById('blockGrid');
+  if (grid){
+    var frag = document.createDocumentFragment();
+    for (var i=0;i<TOTAL;i++){
+      var b = document.createElement('span');
+      b.className = 'block';
+      if(!reduced){ b.style.transitionDelay = Math.min(i*2,260) + 'ms'; }
+      frag.appendChild(b);
+    }
+    grid.appendChild(frag);
+  }
+  var blocks = grid ? Array.prototype.slice.call(grid.children) : [];
+
+  var stages = [
+    {n:178, kicker:'In total',            of:'commitments across four summits', desc:'Everything pledged at Bletchley Park, Seoul, Paris and New Delhi — by governments and companies alike.', core:false},
+    {n:40,  kicker:'Step 1 — relevance',  of:'relate to our three themes',      desc:'Trackable, but only with a lot of work. This is the widest set we could credibly cover.', core:false},
+    {n:11,  kicker:'Step 2 — verifiability', of:'are easier to track',          desc:'The subset where progress can be checked without heavy methodology.', core:false},
+    {n:4,   kicker:'Step 3 — strict core', of:'industry, closely related',      desc:'Defensible with little benchmarking — but, on its own, probably too thin to land.', core:true}
+  ];
+
+  var numEl   = document.getElementById('fNum');
+  var kickEl  = document.getElementById('fKicker');
+  var ofEl    = document.getElementById('fOf');
+  var descEl  = document.getElementById('fDesc');
+  var playBtn = document.getElementById('fPlay');
+  var labelEl = playBtn ? playBtn.querySelector('.play-label') : null;
+  var dots    = Array.prototype.slice.call(document.querySelectorAll('#fDots .dot-btn'));
+
+  var current = 0, displayed = 178, timer = null, rafId = null;
+
+  function tween(from, to){
+    if (reduced){ numEl.textContent = to; return; }
+    if (rafId) cancelAnimationFrame(rafId);
+    var dur = 520, t0 = performance.now();
+    function step(now){
+      var p = Math.min((now - t0)/dur, 1);
+      var e = 1 - Math.pow(1 - p, 3);
+      numEl.textContent = Math.round(from + (to - from) * e);
+      if (p < 1) rafId = requestAnimationFrame(step);
+    }
+    rafId = requestAnimationFrame(step);
+  }
+
+  function paint(idx){
+    var s = stages[idx];
+    for (var i=0;i<blocks.length;i++){
+      var on = i < s.n;
+      blocks[i].classList.toggle('on', on);
+      blocks[i].classList.toggle('core', on && s.core);
+    }
+    if (kickEl) kickEl.textContent = s.kicker;
+    if (ofEl)   ofEl.textContent   = s.of;
+    if (descEl) descEl.textContent = s.desc;
+    for (var d=0; d<dots.length; d++){
+      var active = d === idx;
+      dots[d].classList.toggle('is-active', active);
+      dots[d].setAttribute('aria-current', active ? 'true' : 'false');
+    }
+    tween(displayed, s.n);
+    displayed = s.n;
+    current = idx;
+  }
+
+  function setPlaying(p){
+    if (!playBtn) return;
+    playBtn.setAttribute('data-playing', p ? 'true' : 'false');
+    if (labelEl) labelEl.textContent = p ? 'Pause' : 'Play';
+    playBtn.setAttribute('aria-label', p ? 'Pause animation' : 'Play animation');
+  }
+  function advance(){ paint((current + 1) % stages.length); }
+  function start(){ if (reduced) return; stop(); timer = setInterval(advance, 5000); setPlaying(true); }
+  function stop(){ if (timer){ clearInterval(timer); timer = null; } setPlaying(false); }
+
+  /* init */
+  paint(0);
+
+  dots.forEach(function(d){
+    d.addEventListener('click', function(){
+      paint(parseInt(d.getAttribute('data-i'),10));
+      if (!reduced) start();
+    });
+  });
+
+  if (playBtn){
+    if (reduced){ playBtn.style.display = 'none'; }
+    playBtn.addEventListener('click', function(){
+      if (timer) stop(); else start();
+    });
+  }
+
+  /* autoplay only while the funnel is on screen */
+  if (!reduced && 'IntersectionObserver' in window){
+    var panel = document.getElementById('analysis');
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) start(); else stop(); });
+    }, {threshold:0.25});
+    if (panel) io.observe(document.querySelector('.funnel-panel'));
+  }
+
+  /* ---- Scroll-spy for the top nav ---- */
+  if ('IntersectionObserver' in window){
+    var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+    var map = {};
+    links.forEach(function(l){ map[l.getAttribute('href').slice(1)] = l; });
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){
+          links.forEach(function(l){ l.classList.remove('is-active'); });
+          var l = map[e.target.id];
+          if (l) l.classList.add('is-active');
+        }
+      });
+    }, {rootMargin:'-45% 0px -50% 0px', threshold:0});
+    document.querySelectorAll('section[id]').forEach(function(s){
+      if (s.id !== 'top') spy.observe(s);
+    });
+  }
+})();
+</script>
+</body>
+</html>
