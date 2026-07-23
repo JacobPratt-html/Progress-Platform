@@ -1,0 +1,570 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PAI Policy — Strategic Questions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#071D49; --blue:#0857C3; --coral:#EC9982;
+  --ink:#18181A; --slate:#8F99AD; --mist:#E9EBEE;
+  --muted:#5C6678; --paper:#FFFFFF; --tint:#F4F6F8;
+  --display:'Space Grotesk','Segoe UI',system-ui,sans-serif;
+  --body:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --maxw:1080px; --bar-h:60px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);
+  font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:24px;}
+a{color:var(--blue);text-decoration:none;border-bottom:1px solid rgba(8,87,195,.28);}
+a:hover{border-bottom-color:var(--blue);}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.02em;color:var(--navy);margin:0;}
+p{margin:0 0 1rem;}
+:focus-visible{outline:2.5px solid var(--blue);outline-offset:3px;}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:50;height:var(--bar-h);
+  background:rgba(255,255,255,.82);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--mist);}
+.topbar .row{max-width:var(--maxw);margin-inline:auto;padding-inline:24px;height:100%;
+  display:flex;align-items:center;gap:20px;justify-content:space-between;}
+.brand{font-family:var(--mono);font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--navy);white-space:nowrap;}
+.brand b{color:var(--blue);}
+nav.nav{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;}
+nav.nav::-webkit-scrollbar{display:none;}
+nav.nav a{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);border:0;padding:7px 11px;border-radius:999px;white-space:nowrap;transition:.2s;}
+nav.nav a:hover{color:var(--navy);background:var(--tint);}
+nav.nav a.is-active{color:#fff;background:var(--blue);}
+
+/* ---------- sections ---------- */
+section{padding-block:clamp(50px,8vw,88px);scroll-margin-top:84px;}
+section.tint{background:var(--tint);border-top:1px solid var(--mist);border-bottom:1px solid var(--mist);}
+.eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--slate);margin-bottom:14px;}
+.sec-head{display:flex;align-items:center;gap:14px;margin-bottom:26px;}
+.chip{flex:0 0 auto;width:46px;height:46px;border-radius:12px;background:rgba(8,87,195,.09);
+  display:grid;place-items:center;color:var(--blue);}
+.chip svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.6;
+  stroke-linecap:round;stroke-linejoin:round;}
+.sec-title{font-size:clamp(1.55rem,3.2vw,2.15rem);font-weight:700;}
+.lead{font-size:1.05rem;color:var(--ink);max-width:62ch;}
+.muted{color:var(--muted);}
+
+/* ---------- hero ---------- */
+.hero{background:var(--navy);color:#fff;position:relative;overflow:hidden;
+  padding-block:clamp(58px,10vw,104px);}
+.hero .eyebrow{color:var(--coral);}
+.hero h1{color:#fff;font-size:clamp(2.4rem,6.2vw,4.1rem);line-height:1.03;font-weight:700;
+  letter-spacing:-.03em;margin-bottom:20px;}
+.hero h1 .accent{color:var(--coral);}
+.hero-callout{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);
+  border-left:3px solid var(--coral);border-radius:14px;padding:20px 22px;max-width:62ch;
+  transition:background-color .25s,border-color .25s,box-shadow .25s,transform .25s;}
+.hero-callout .label{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--coral);margin-bottom:8px;}
+.hero-callout p{color:#fff;margin:0;}
+@media(hover:hover){
+  .hero-callout:hover{background:#fff;border-color:#fff;border-left-color:var(--coral);
+    box-shadow:0 16px 40px rgba(0,0,0,.28);transform:translateY(-3px);}
+  .hero-callout:hover .label{color:var(--blue);}
+  .hero-callout:hover p{color:var(--ink);}
+}
+.hero .pattern{position:absolute;right:-40px;top:-40px;width:320px;height:320px;opacity:.06;
+  background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);
+  background-size:26px 26px;
+  -webkit-mask-image:radial-gradient(circle at 70% 30%,#000,transparent 70%);
+  mask-image:radial-gradient(circle at 70% 30%,#000,transparent 70%);}
+
+/* ---------- stage map ---------- */
+.stagemap-wrap{overflow-x:auto;scrollbar-width:none;margin-top:4px;padding-bottom:4px;}
+.stagemap-wrap::-webkit-scrollbar{display:none;}
+.stagemap{display:grid;grid-template-columns:repeat(3,1fr);column-gap:14px;row-gap:10px;
+  min-width:580px;align-items:center;}
+.smap-head{display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;
+  padding-bottom:12px;border-bottom:1px solid var(--mist);margin-bottom:4px;}
+.smap-ico{width:40px;height:40px;border-radius:11px;background:rgba(8,87,195,.09);
+  display:grid;place-items:center;color:var(--blue);}
+.smap-ico svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.6;
+  stroke-linecap:round;stroke-linejoin:round;}
+.smap-head h3{font-size:1.1rem;color:var(--navy);}
+.smap-arrow{position:relative;height:44px;display:flex;align-items:center;padding:0 16px;
+  border-radius:8px 0 0 8px;margin-right:16px;font-size:.82rem;font-weight:600;}
+.smap-arrow::after{content:"";position:absolute;right:-16px;top:0;
+  border-top:22px solid transparent;border-bottom:22px solid transparent;
+  border-left-style:solid;border-left-width:16px;}
+.smap-core{grid-column:1 / span 3;background:var(--navy);color:#fff;
+  font-family:var(--mono);font-weight:500;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;}
+.smap-core::after{border-left-color:#071D49;}
+.smap-focus{grid-column:1 / span 2;background:rgba(236,153,130,.10);
+  border:1.6px dashed var(--coral);border-right:none;color:var(--navy);}
+.smap-focus::after{border-left-color:var(--coral);}
+.smap-caption{font-size:.86rem;color:var(--muted);margin-top:16px;max-width:70ch;}
+.smap-caption b{color:var(--navy);}
+
+/* ---------- cards / outcomes ---------- */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+@media(max-width:760px){.grid2,.grid3{grid-template-columns:1fr;}}
+.card{background:#fff;border:1px solid var(--mist);border-radius:14px;padding:20px 22px;
+  transition:background-color .25s,border-color .25s,box-shadow .25s,transform .25s;}
+.card .label{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--slate);margin-bottom:8px;}
+.card p{margin:0;}
+.card.key{border-color:rgba(8,87,195,.4);}
+@media(hover:hover){
+  .card:hover{background:var(--navy);border-color:var(--navy);
+    box-shadow:0 14px 34px rgba(7,29,73,.22);transform:translateY(-3px);}
+  .card:hover .label{color:#9DBEFF;}
+  .card:hover p{color:#fff;}
+  .card:hover p b{color:var(--coral);}
+}
+
+/* ---------- area cards ---------- */
+.area{background:#fff;border:1px solid var(--mist);border-left:3px solid var(--coral);
+  border-radius:14px;padding:20px 22px;}
+.area h3{font-size:1.12rem;margin-bottom:10px;line-height:1.25;}
+.area .leads{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:var(--muted);}
+.area .leads span{display:block;color:var(--slate);font-size:.64rem;letter-spacing:.16em;
+  text-transform:uppercase;margin-bottom:4px;}
+
+/* ---------- aside / action ---------- */
+.aside{background:var(--tint);border-left:3px solid var(--coral);border-radius:0 12px 12px 0;
+  padding:16px 20px;margin:22px 0;color:var(--muted);}
+.aside b{color:var(--navy);}
+.action{display:flex;gap:14px;align-items:flex-start;background:var(--navy);color:#fff;
+  border-radius:14px;padding:18px 22px;margin:24px 0;}
+.action .mark{font-family:var(--mono);color:var(--coral);font-size:1.1rem;line-height:1.4;}
+.action p{margin:0;color:#fff;font-weight:500;}
+
+/* ---------- tables ---------- */
+.table-scroll{overflow-x:auto;border:1px solid var(--mist);border-radius:16px;margin-top:8px;
+  -webkit-overflow-scrolling:touch;}
+table{border-collapse:collapse;width:100%;font-size:.9rem;}
+.fn-tbl{min-width:720px;} .out-tbl{min-width:880px;}
+thead th{background:var(--navy);color:#fff;font-family:var(--body);font-weight:600;
+  text-align:left;padding:12px 16px;font-size:.82rem;letter-spacing:.01em;white-space:nowrap;
+  border-bottom:1px solid var(--navy);}
+tbody td{padding:13px 16px;border-top:1px solid var(--mist);vertical-align:top;}
+tbody tr:first-child td{border-top:0;}
+.stg{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--navy);font-weight:500;background:var(--tint);white-space:nowrap;
+  border-right:1px solid var(--mist);vertical-align:middle;}
+.fn{font-weight:600;color:var(--ink);}
+.desc{color:var(--muted);}
+.ex{color:var(--muted);font-style:italic;font-size:.86rem;}
+.ex a{font-style:normal;}
+.dash{color:var(--slate);}
+.auth{font-family:var(--display);font-weight:600;color:var(--navy);font-size:.98rem;
+  background:var(--tint);border-right:1px solid var(--mist);vertical-align:middle;white-space:nowrap;}
+.eff{white-space:nowrap;font-weight:500;}
+.eff .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:baseline;}
+.eff.low .dot{background:var(--coral);}
+.eff.med .dot{background:var(--blue);}
+.eff.high .dot{background:var(--navy);}
+tbody.grp-pai td{background:rgba(8,87,195,.038);}
+tbody.grp-co td{background:rgba(236,153,130,.06);}
+tbody.grp-co tr:first-child td{border-top:2.5px solid var(--navy);}
+.auth.pai{background:var(--navy);color:#fff;}
+.auth.co{background:var(--coral);color:var(--navy);}
+
+/* ---------- questions ---------- */
+.qwrap{counter-reset:q;margin-top:8px;}
+.qtheme{font-family:var(--mono);font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--blue);margin:26px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--mist);}
+.qtheme:first-child{margin-top:0;}
+ul.q{list-style:none;margin:0;padding:0;}
+ul.q li{counter-increment:q;position:relative;padding:11px 0 11px 46px;line-height:1.55;
+  border-bottom:1px solid var(--mist);}
+ul.q li:last-child{border-bottom:0;}
+ul.q li::before{content:counter(q);position:absolute;left:0;top:9px;width:29px;height:29px;
+  border-radius:50%;background:var(--navy);color:#fff;font-family:var(--display);font-weight:600;
+  font-size:.82rem;display:grid;place-items:center;}
+
+/* ---------- footer ---------- */
+footer{background:var(--navy);color:#C9D2E6;padding-block:34px;}
+footer .row{max-width:var(--maxw);margin-inline:auto;padding-inline:24px;
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;}
+footer b{color:#fff;}
+footer a{color:var(--coral);border:0;}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;scroll-behavior:auto!important;}
+}
+</style>
+
+<div class="topbar">
+  <div class="row">
+    <div class="brand">Partnership on AI · <b>Policy</b></div>
+    <nav class="nav" aria-label="Section navigation">
+      <a href="#overview">Overview</a>
+      <a href="#core">Core functions</a>
+      <a href="#focus">Focus areas</a>
+      <a href="#outputs">Outputs</a>
+      <a href="#questions">Questions</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="pattern" aria-hidden="true"></div>
+  <div class="wrap">
+    <h1>PAI Policy<br><span class="accent">Strategic</span> Questions</h1>
+    <div class="hero-callout">
+      <div class="label">Purpose of this document</div>
+      <p>To inform a strategic discussion on the different functions of our team, how we can work on different policy tracks, and the potential outputs from each of those tracks.</p>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="wrap">
+    <div class="eyebrow">Section 01</div>
+    <div class="sec-head">
+      <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 19 L9 6 L13 13 L16 8 L21 19 Z"/><line x1="3" y1="19" x2="21" y2="19"/></svg></div>
+      <h2 class="sec-title">Overview</h2>
+    </div>
+    <p class="lead">PAI has released an updated <a href="https://docs.google.com/document/d/15Ducoib53aNSRaJlpHUUJlXHJ0JM6re6nn6HjdLA3YI/edit?tab=t.7kplsvexrabt">Strategic Plan</a> with a renewed focus on three areas of work: AI &amp; the Value Chain; AI &amp; Human Connection and Wellbeing; and AI &amp; Shared Prosperity. Policy plays a key role across all three areas.</p>
+    <p>We can now redesign the policy team to improve how we design and develop guidance that changes how policymakers make decisions, and ultimately support a more just, equitable and prosperous world.</p>
+    <p>This document reviews how this could be done — looking at the core functions of our policy team regardless of P&amp;R work, potential functions that align with and support the three focus areas, and the potential outputs across the core function and three areas. It closes with key questions for discussion.</p>
+
+    <div class="eyebrow" style="margin-top:38px;">The three strategic-plan stages</div>
+    <div class="stagemap-wrap">
+      <div class="stagemap">
+        <div class="smap-head" style="grid-row:1;grid-column:1;">
+          <div class="smap-ico"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.2"/><line x1="15.5" y1="15.5" x2="20" y2="20"/></svg></div>
+          <h3>Discovery</h3>
+        </div>
+        <div class="smap-head" style="grid-row:1;grid-column:2;">
+          <div class="smap-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><polygon points="12 6.5 14 12 12 17.5 10 12"/></svg></div>
+          <h3>Guidance</h3>
+        </div>
+        <div class="smap-head" style="grid-row:1;grid-column:3;">
+          <div class="smap-ico"><svg viewBox="0 0 24 24"><polyline points="4 16 10 10 13 13 20 5"/><polyline points="15 5 20 5 20 10"/></svg></div>
+          <h3>Scale</h3>
+        </div>
+
+        <div class="smap-arrow smap-core" style="grid-row:2;">Core policy functions</div>
+
+        <div class="smap-arrow smap-focus" style="grid-row:3;">AI &amp; the Value Chain</div>
+        <div class="smap-arrow smap-focus" style="grid-row:4;">AI &amp; Human Connection and Wellbeing</div>
+        <div class="smap-arrow smap-focus" style="grid-row:5;">AI &amp; Shared Prosperity</div>
+      </div>
+    </div>
+    <p class="smap-caption">The core policy functions span all three stages; each focus area runs through <b>Discovery</b> and <b>Guidance</b> in close partnership with P&amp;R.</p>
+  </div>
+</section>
+
+<!-- CORE FUNCTIONS -->
+<section id="core" class="tint">
+  <div class="wrap">
+    <div class="eyebrow">Section 02</div>
+    <div class="sec-head">
+      <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 L20 6.5 V11.5 C20 16 16.4 19.2 12 21 C7.6 19.2 4 16 4 11.5 V6.5 Z"/><circle cx="12" cy="11" r="3"/></svg></div>
+      <h2 class="sec-title">Core policy team functions</h2>
+    </div>
+    <p class="lead">We have previously defined the core functions of our policy team across developing outputs, providing formal evidence, and other actions. These can be updated to align with the new strategic-plan groupings: Discovery, Guidance, and Scale.</p>
+
+    <div class="table-scroll">
+      <table class="fn-tbl">
+        <thead><tr><th>Stage</th><th>Function</th><th>What it does</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stg" rowspan="2">Discovery</td>
+            <td class="fn">Host partner space on policy developments</td>
+            <td class="desc">Convene partners to interpret and discuss the impacts of current policy</td>
+            <td class="ex">SteerCo discussions on US EOs</td>
+          </tr>
+          <tr>
+            <td class="fn">Conduct foresight informing policy work</td>
+            <td class="desc">Discuss priorities with partners; research legislative trends, etc.</td>
+            <td class="ex">Policy SteerCo discussions</td>
+          </tr>
+          <tr>
+            <td class="stg">Guidance</td>
+            <td class="fn">Conduct original policy research</td>
+            <td class="desc">Conduct policymaker research in non-P&amp;R focus areas, such as assurance</td>
+            <td class="ex">'Strengthening the Assurance Ecosystem' workstream</td>
+          </tr>
+          <tr>
+            <td class="stg" rowspan="2">Scale</td>
+            <td class="fn">Advocate via 1:1s and bring policymakers in</td>
+            <td class="desc">Direct outreach; convene them into discussions</td>
+            <td class="ex">1:1s in DC · SteerCo Retreat policymaker engagement</td>
+          </tr>
+          <tr>
+            <td class="fn">Provide formal evidence</td>
+            <td class="desc">Respond to RFIs and public consultations, and provide legislative testimony and expert evidence</td>
+            <td class="ex">EU submissions</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="eyebrow" style="margin-top:34px;">Outcomes our core work aims to achieve</p>
+    <div class="grid2">
+      <div class="card"><div class="label">Outcome</div><p><b>Valuable discussions</b> for partners</p></div>
+      <div class="card"><div class="label">Outcome</div><p><b>Better targeted</b> research</p></div>
+      <div class="card"><div class="label">Outcome</div><p><b>Persuasive</b> recommendations</p></div>
+      <div class="card"><div class="label">Outcome</div><p><b>Greater uptake</b> of work and impact</p></div>
+    </div>
+
+    <div class="aside"><b>I do not think progress reporting is a core policy function.</b> International commitment tracking is policy work, but tracking how well companies are adhering to frameworks developed by P&amp;R cannot be seen as policy work.</div>
+  </div>
+</section>
+
+<!-- FOCUS AREAS -->
+<section id="focus">
+  <div class="wrap">
+    <div class="eyebrow">Section 03</div>
+    <div class="sec-head">
+      <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".6" fill="currentColor" stroke="none"/></svg></div>
+      <h2 class="sec-title">PAI focus areas</h2>
+    </div>
+    <p class="lead">Alongside our core policy work, we also intend to focus on three areas:</p>
+
+    <div class="grid3" style="margin:22px 0 26px;">
+      <div class="area">
+        <h3>AI &amp; the Value Chain</h3>
+        <div class="leads"><span>Leads</span>Madhu / Eric · Sam / Albert</div>
+      </div>
+      <div class="area">
+        <h3>AI &amp; Human Connection and Wellbeing</h3>
+        <div class="leads"><span>Leads</span>Claire</div>
+      </div>
+      <div class="area">
+        <h3>AI &amp; Shared Prosperity</h3>
+        <div class="leads"><span>Leads</span>Michael / Shachee / Eliza</div>
+      </div>
+    </div>
+
+    <div class="action">
+      <div class="mark" aria-hidden="true">▸</div>
+      <p>To do quality work in these areas, we will need to collaborate with P&amp;R teams — any dedicated research will likely be on core policy topics, leaving very limited resource for this work. The table below therefore applies to each of the three areas.</p>
+    </div>
+
+    <div class="table-scroll">
+      <table class="fn-tbl">
+        <thead><tr><th>Stage</th><th>Function</th><th>What it does</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="stg" rowspan="2">Discovery</td>
+            <td class="fn">Conduct foresight informing P&amp;R work</td>
+            <td class="desc">Discuss priorities with partners; research legislative trends and how policy frames and addresses issues to inform PAI agenda-setting</td>
+            <td class="ex">Jackie's AIHCW research</td>
+          </tr>
+          <tr>
+            <td class="fn">Inform PAI research direction</td>
+            <td class="desc">Use analysis to develop research questions that are relevant to policymakers</td>
+            <td class="ex">'6 Governance Priorities' blog</td>
+          </tr>
+          <tr>
+            <td class="stg" rowspan="3">Guidance</td>
+            <td class="fn">Participate in P&amp;R working groups</td>
+            <td class="desc">Embed team members into P&amp;R working groups to shape recommendations</td>
+            <td class="ex">TBD</td>
+          </tr>
+          <tr>
+            <td class="fn">Translate P&amp;R research into policy recommendations</td>
+            <td class="desc">Analyze industry-focused recommendations to provide policy actions</td>
+            <td class="ex">'Open models' discussions · AIHC EU Code of Conduct</td>
+          </tr>
+          <tr>
+            <td class="fn">Set official PAI policy positions</td>
+            <td class="desc">Adjudicate and develop unified, official PAI policy positions</td>
+            <td class="ex">TBD</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="eyebrow" style="margin-top:34px;">Outcomes this work aims to achieve</p>
+    <div class="grid2">
+      <div class="card"><div class="label">Outcome</div><p><b>Better targeted</b> research</p></div>
+      <div class="card"><div class="label">Outcome</div><p><b>Policy-relevant</b> recommendations</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTPUTS -->
+<section id="outputs" class="tint">
+  <div class="wrap">
+    <div class="eyebrow">Section 04</div>
+    <div class="sec-head">
+      <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 L21 7.5 L12 12 L3 7.5 Z"/><polyline points="3 12 12 16.5 21 12"/><polyline points="3 16.5 12 21 21 16.5"/></svg></div>
+      <h2 class="sec-title">Output options</h2>
+    </div>
+    <p class="lead">Our research and recommendations will be packaged as outputs. These can be PAI-authored or co-authored, depending on the level of collaboration in developing them, and can take various levels of effort to produce.</p>
+
+    <div class="table-scroll">
+      <table class="out-tbl">
+        <thead><tr><th>Authorship</th><th>Output</th><th>Description</th><th>Effort</th><th>Example</th></tr></thead>
+        <tbody class="grp-pai">
+          <tr>
+            <td class="auth pai" rowspan="7">PAI Authored</td>
+            <td class="fn">Statement</td>
+            <td class="desc">A short statement positioning PAI on a certain topic</td>
+            <td class="eff low"><span class="dot"></span>Low</td>
+            <td class="ex"><span class="dash">—</span></td>
+          </tr>
+          <tr>
+            <td class="fn">Blog post</td>
+            <td class="desc">A written article describing an issue or relevant policy development</td>
+            <td class="eff low"><span class="dot"></span>Low</td>
+            <td class="ex"><span class="dash">—</span></td>
+          </tr>
+          <tr>
+            <td class="fn">Policy brief</td>
+            <td class="desc">A document providing a PAI point of view on a narrow topic</td>
+            <td class="eff med"><span class="dot"></span>Medium</td>
+            <td class="ex">Stanford: <a href="https://hai.stanford.edu/assets/files/hai-policy-brief-validating-claims-about-ai.pdf">Validating Claims about AI</a></td>
+          </tr>
+          <tr>
+            <td class="fn">Consultation or RFI response</td>
+            <td class="desc">A response to a government consultation</td>
+            <td class="eff med"><span class="dot"></span>Medium</td>
+            <td class="ex"><span class="dash">—</span></td>
+          </tr>
+          <tr>
+            <td class="fn">Taxonomy</td>
+            <td class="desc">A concise presentation of concepts relevant to a topic area</td>
+            <td class="eff med"><span class="dot"></span>Medium</td>
+            <td class="ex"><a href="https://partnershiponai.org/resource/glossary-for-synthetic-media-transparency-methods-part-1/">Glossary for Synthetic Media Transparency Methods</a></td>
+          </tr>
+          <tr>
+            <td class="fn">Framework</td>
+            <td class="desc">A structured approach for organising thinking and guiding action on a topic</td>
+            <td class="eff high"><span class="dot"></span>High</td>
+            <td class="ex"><a href="https://partnershiponai.org/modeldeployment/">Guidance for Safe Foundation Model Deployment</a></td>
+          </tr>
+          <tr>
+            <td class="fn">Full report</td>
+            <td class="desc">A comprehensive treatment of a topic, presenting PAI's research, analysis, and recommendations</td>
+            <td class="eff high"><span class="dot"></span>High</td>
+            <td class="ex"><a href="https://partnershiponai.org/workstream/strengthening-the-ai-assurance-ecosystem/">Strengthening the AI Assurance Ecosystem</a></td>
+          </tr>
+        </tbody>
+        <tbody class="grp-co">
+          <tr class="co-start">
+            <td class="auth co" rowspan="6">Co-Authored</td>
+            <td class="fn">Joint statement</td>
+            <td class="desc">A short statement co-signed with partners to express a shared position on a topic</td>
+            <td class="eff low"><span class="dot"></span>Low</td>
+            <td class="ex"><span class="dash">—</span></td>
+          </tr>
+          <tr>
+            <td class="fn">Workshop summary</td>
+            <td class="desc">A write-up capturing the discussions and key takeaways from a convening of stakeholders</td>
+            <td class="eff low"><span class="dot"></span>Low</td>
+            <td class="ex"><span class="dash">—</span></td>
+          </tr>
+          <tr>
+            <td class="fn">Co-produced policy brief</td>
+            <td class="desc">A point of view on a narrow topic, developed jointly with one or more partners</td>
+            <td class="eff med"><span class="dot"></span>Medium</td>
+            <td class="ex"><span class="dash">—</span></td>
+          </tr>
+          <tr>
+            <td class="fn">Co-developed taxonomy</td>
+            <td class="desc">A presentation of concepts in a topic area, developed collaboratively with partners</td>
+            <td class="eff med"><span class="dot"></span>Medium</td>
+            <td class="ex"><a href="https://partnershiponai.org/resource/glossary-for-synthetic-media-transparency-methods-part-1/">Glossary for Synthetic Media Transparency Methods</a></td>
+          </tr>
+          <tr>
+            <td class="fn">Co-developed framework</td>
+            <td class="desc">A structured approach to a topic, developed collaboratively with partners to guide action across organisations</td>
+            <td class="eff high"><span class="dot"></span>High</td>
+            <td class="ex"><a href="https://partnershiponai.org/modeldeployment/">Guidance for Safe Foundation Model Deployment</a></td>
+          </tr>
+          <tr>
+            <td class="fn">Multistakeholder consensus report</td>
+            <td class="desc">A comprehensive report reflecting agreement reached among diverse stakeholders through a structured, collaborative process</td>
+            <td class="eff high"><span class="dot"></span>High</td>
+            <td class="ex"><a href="https://partnershiponai.org/workstream/strengthening-the-ai-assurance-ecosystem/">Strengthening the AI Assurance Ecosystem</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="action">
+      <div class="mark" aria-hidden="true">▸</div>
+      <p>We need to clarify which output we should develop for each policy track.</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUESTIONS -->
+<section id="questions">
+  <div class="wrap">
+    <div class="eyebrow">Section 05</div>
+    <div class="sec-head">
+      <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5 h14 a2 2 0 0 1 2 2 v8 a2 2 0 0 1 -2 2 H11 l-4 4 v-4 H5 a2 2 0 0 1 -2 -2 V7 a2 2 0 0 1 2 -2 Z"/><line x1="8.5" y1="11" x2="8.5" y2="11.01"/><line x1="12" y1="11" x2="12" y2="11.01"/><line x1="15.5" y1="11" x2="15.5" y2="11.01"/></svg></div>
+      <h2 class="sec-title">Questions for discussion</h2>
+    </div>
+
+    <div class="qwrap">
+      <div class="qtheme">Prioritisation &amp; resourcing</div>
+      <ul class="q">
+        <li>How do we prioritise our work across all these areas given our limited resource? What do we consciously choose <em>not</em> to do?</li>
+        <li>Do we go deep in one or two focus areas and functions, or maintain a lighter presence across all three? What is the cost of spreading ourselves thin?</li>
+        <li>Which area has the clearest policy window over the next 12 months, and should that shape our sequencing?</li>
+      </ul>
+
+      <div class="qtheme">Team &amp; capability</div>
+      <ul class="q">
+        <li>How can we hire a team to cover all these areas effectively? Which functions need dedicated expertise, and which can be shared across the three of us?</li>
+        <li>What mix of skills do we need: domain specialists for the three areas, or generalist policy translators who can work across them?</li>
+      </ul>
+
+      <div class="qtheme">Working with P&amp;R</div>
+      <ul class="q">
+        <li>How can we complement existing policy-focused research and recommendations, such as in AI &amp; Shared Prosperity, rather than duplicating them?</li>
+        <li>How do we sequence policy work against research timelines — do we wait for research to mature, or run foresight and positioning in parallel? Does this vary by theme?</li>
+      </ul>
+
+      <div class="qtheme">Outputs &amp; impact</div>
+      <ul class="q">
+        <li>Which outputs give us the most impact per unit of effort? Should we favour frequent, lower-effort outputs or fewer flagship pieces?</li>
+        <li>How many co-authored / consensus outputs can we realistically sustain, given their high coordination cost?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="row">
+    <div>Partnership on AI · <b>Policy team</b></div>
+    <div>Strategic questions · July 2026 · <b>Internal discussion draft</b></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('nav.nav a'));
+  var map = {};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section[id]'));
+  if(!('IntersectionObserver' in window)) return;
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        links.forEach(function(l){ l.classList.remove('is-active'); });
+        var active = map[e.target.id];
+        if(active) active.classList.add('is-active');
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+  sections.forEach(function(s){ obs.observe(s); });
+})();
+</script>
